@@ -32,6 +32,15 @@
       "@/sections/*": [
         "./app/src/sections/*"
       ],
+      "@/hooks": [
+        "./app/src/hooks"
+      ],
+      "@/store": [
+        "./app/src/store"
+      ],
+      "@/types": [
+        "./app/src/types"
+      ]
     }
   },
   "include": [

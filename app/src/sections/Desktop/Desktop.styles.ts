@@ -17,4 +17,9 @@ export const ProgramsContainer = styled.div`
     height: 100%;
     position: relative;
     padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: hidden;
 `

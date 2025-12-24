@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-export const ShortcutButton = styled.button`
+export const ShortcutBody = styled.div`
   width: 135px;
   height: 75px;
   display: flex;
@@ -13,3 +13,4 @@ export const ShortcutButton = styled.button`
   color: white;
   font-size: 14px;
 `
+

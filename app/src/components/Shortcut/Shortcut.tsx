@@ -1,28 +1,66 @@
 
+import { useOpenProgramCallback, useShortcutProgramImageProps } from "@/hooks";
+import { Program, ProgramType } from "@/types";
 import { FC } from "react";
 import Image from "next/image";
 
-import { ShortcutButton } from "./Shortcut.styles";
+import { ShortcutBody } from "./Shortcut.styles";
 
 interface ShortcutProps {
-  readonly name: string;
-  readonly shortcutType: "folder" | "internet";
+  readonly program: Program;
 }
 
-const Shortcut: FC<ShortcutProps> = ({ name, shortcutType }) => {
-  const ariaLabel = shortcutType === "folder"
-    ? `Open ${name} folder`
-    : `Go to ${name} page`;
-  const imageProps = shortcutType === "folder"
-    ? { src: "/images/ClosedFolder48.svg", alt: `${name} folder shortcut` }
-    : { src: "/images/InternetExplorer48.png", alt: `${name} internet shortcut` };
+const getShortcutAriaLabel = (programType: ProgramType, name: string) => {
+  switch (programType) {
+    case "folder":
+      return `Open ${name} folder`;
+    case "internet":
+      return `Go to ${name} page`;
+    case "document":
+      return `Open ${name} document`;
+  }
+}
 
-  return (
-    <ShortcutButton aria-label={ariaLabel} >
+const Shortcut: FC<ShortcutProps> = ({ program }) => {
+  const ariaLabel = getShortcutAriaLabel(program.programType, program.name);
+  const imageProps = useShortcutProgramImageProps(program.programType, program.name);
+
+  const openProgram = useOpenProgramCallback(program);
+
+  const shortcutBody = (
+    <ShortcutBody aria-label={ariaLabel} >
       <Image {...imageProps} width={48} height={48} />
-      {name}
-    </ShortcutButton >
+      {program.name}
+    </ShortcutBody >
   );
+
+  return program.programType === "internet"
+    ? (
+      <a
+        href={program.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={ariaLabel}
+        style={{
+          width: 135,
+          height: 75,
+        }}
+      >
+        {shortcutBody}
+      </a>
+    )
+    : (
+      <button
+        onClick={openProgram}
+        aria-label={ariaLabel}
+        style={{
+          width: 135,
+          height: 75,
+        }}
+      >
+        {shortcutBody}
+      </button>
+    )
 };
 
 export default Shortcut;

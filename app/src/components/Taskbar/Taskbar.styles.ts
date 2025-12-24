@@ -82,21 +82,25 @@ export const ProgramButton = styled.button<{ $isActive?: boolean }>`
   column-gap: 8px;
   color: white;
   font-size: 20px;
+  padding: 5px 5px;
   transition: all 0.2s ease-in-out;
   border: rgba(35, 75, 157, .5) 0.5px solid;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 
   &:hover {
     background: linear-gradient(148deg, #164DBC 0%, #1E53BB 100%);
   }
 
   @media (max-width: 900px) {
-    width: 150px;
-    font-size: 16px;
+    width: 160px;
+    font-size: 14px;
   }
 
-    @media (max-width: 600px) {
-    width: 120px;
+  @media (max-width: 600px) {
+    width: 130px;
     font-size: 14px;
   }
 `

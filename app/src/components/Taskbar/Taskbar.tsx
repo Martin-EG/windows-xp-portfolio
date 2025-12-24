@@ -1,5 +1,7 @@
 "use client"
 
+import { useOpenedProgramsStore } from "@/store";
+import { ProgramType } from "@/types";
 import { FC, useState } from "react";
 import Image from 'next/image';
 
@@ -13,18 +15,24 @@ import {
   TaskbarWrapper,
 } from './Taskbar.styles';
 
-
-interface ProgramProps {
-  readonly name: string;
-  readonly isActive?: boolean;
-}
-
 interface TaskbarProps {
-  readonly programs: ProgramProps[];
   readonly toggleStartMenu: () => void;
+  readonly startMenuRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const Taskbar: FC<TaskbarProps> = ({ programs, toggleStartMenu }) => {
+const getProgramImageProps = (programType: ProgramType, name: string) => {
+  switch (programType) {
+    case "folder":
+      return { src: "/images/ClosedFolder24.svg", alt: `${name} folder shortcut` };
+    case "document":
+      return { src: "/images/Document32.png", alt: `${name} document shortcut` };
+    case "internet":
+      return { src: "/images/InternetExplorer24.png", alt: `${name} internet shortcut` };
+  }
+}
+
+const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu, startMenuRef }) => {
+  const programs = useOpenedProgramsStore((state) => state.programs);
   const [time, setTime] = useState(new Date().toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
@@ -39,17 +47,23 @@ const Taskbar: FC<TaskbarProps> = ({ programs, toggleStartMenu }) => {
     }));
   }, 1000);
 
-  const programButtons = programs.map((program, index) =>
-    <ProgramButton key={index} $isActive={program.isActive}>
-      <Image src="/images/ClosedFolder24.svg" alt="folder icon" width={20} height={20} />
-      {program.name}
-    </ProgramButton>
-  );
+  const programButtons = programs.map((program, index) => {
+    const { src, alt } = getProgramImageProps(program.programType, program.name);
+
+    return (
+      <ProgramButton key={index} $isActive={program.isActive}>
+        <Image src={src} alt={alt} width={24} height={24} />
+        {program.name}
+      </ProgramButton>
+    )
+  });
 
   return (
     <TaskbarWrapper>
       <TaskbarContainer>
-        <StartButton onClick={toggleStartMenu}>Start</StartButton>
+        <div ref={startMenuRef}>
+          <StartButton data-id="start-button" onClick={toggleStartMenu}>Start</StartButton>
+        </div>
         <Flexbox>
           {programButtons}
         </Flexbox>
