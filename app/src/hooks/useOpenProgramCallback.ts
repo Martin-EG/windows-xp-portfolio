@@ -4,11 +4,11 @@ import { Program } from "@/types";
 import { useOpenedProgramsStore } from "@/store";
 import { useCallback } from "react";
 
-type UseOpenProgramCallback = (program: Program) => () => void;
-export const useOpenProgramCallback: UseOpenProgramCallback = (program) => {
+type UseOpenProgramCallback = () => (program: Program) => void;
+export const useOpenProgramCallback: UseOpenProgramCallback = () => {
   const { programs, addProgram, removeProgram, toggleProgram } = useOpenedProgramsStore((state) => state);
 
-  return useCallback(() => {
+  return useCallback((program: Program) => {
     const currentProgram = programs[0];
     if (currentProgram && currentProgram.id === program.id && currentProgram.isActive) {
       return;

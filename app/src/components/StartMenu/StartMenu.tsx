@@ -64,15 +64,15 @@ const mostVisitedUrls: MostVisitedUrl[] = [
 
 const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuRef }) => {
   const { toggleStartMenu } = useStartMenuStore((state) => state);
+  const openProgram = useOpenProgramCallback();
 
   if (!shouldShowStartMenu) return null;
 
   const MostUsedProgramItems = mostUsedPrograms.map((program, index) => {
     const imageProps = useShortcutProgramImageProps(program.programType, program.name);
-    const openProgram = useOpenProgramCallback(program);
 
     const openProgramAndCloseStartMenu = () => {
-      openProgram();
+      openProgram(program);
       toggleStartMenu();
     }
 

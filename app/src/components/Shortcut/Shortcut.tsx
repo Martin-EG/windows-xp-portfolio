@@ -25,7 +25,7 @@ const Shortcut: FC<ShortcutProps> = ({ program }) => {
   const ariaLabel = getShortcutAriaLabel(program.programType, program.name);
   const imageProps = useShortcutProgramImageProps(program.programType, program.name);
 
-  const openProgram = useOpenProgramCallback(program);
+  const openProgram = useOpenProgramCallback();
 
   const shortcutBody = (
     <ShortcutBody aria-label={ariaLabel} >
@@ -51,7 +51,7 @@ const Shortcut: FC<ShortcutProps> = ({ program }) => {
     )
     : (
       <button
-        onClick={openProgram}
+        onClick={() => openProgram(program)}
         aria-label={ariaLabel}
         style={{
           width: 135,
