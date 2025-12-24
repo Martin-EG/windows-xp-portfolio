@@ -23,7 +23,23 @@ export const ExperienceDocument = () => {
       ))}
 
       <Paragraph style={{ fontWeight: 'bold' }}>
-        For more information, please visit my LinkedIn profile or CV
+        For more information, please visit my {" "}
+        <a
+          href="https://www.linkedin.com/in/martin-espericueta/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: 'underline' }}
+        >
+          LinkedIn profile
+        </a> or{" "}
+        <a
+          href="/files/CV-MartinMateoEspericuetaGomez-SoftwareEngineer-Nov2025.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: 'underline' }}
+        >
+          CV
+        </a>
       </Paragraph>
     </div>
   )

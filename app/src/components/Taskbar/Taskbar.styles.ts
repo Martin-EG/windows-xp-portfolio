@@ -1,6 +1,6 @@
 "use client"
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const TaskbarWrapper = styled.div`
   width: 100%;
@@ -69,6 +69,15 @@ export const SystemSection = styled.div`
   }
 `
 
+const ProgramButtonOpenAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
+
 export const ProgramButton = styled.button<{ $isActive?: boolean }>`
   height: 100%;
   width: 200px;
@@ -89,6 +98,7 @@ export const ProgramButton = styled.button<{ $isActive?: boolean }>`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  animation: ${ProgramButtonOpenAnimation} 0.3s ease-in-out;
 
   &:hover {
     background: linear-gradient(148deg, #164DBC 0%, #1E53BB 100%);

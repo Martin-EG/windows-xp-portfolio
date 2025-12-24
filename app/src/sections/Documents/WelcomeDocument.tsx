@@ -6,11 +6,11 @@ export const WelcomeDocument = () => {
   return (
     <div>
       <Title>
-        Hi! I'm Martin Espericueta and I'm front-end developer
+        Hi! I'm Martin and I'm frontend developer
       </Title>
 
       <Paragraph>
-        I’m a Front-End Software Engineer passionate about building smooth, accessible, and high-impact web experiences. Most recently, I worked at Microsoft, as part of the Viva Engage (Yammer) team, where I designed and developed new features that enhanced social interaction and productivity in enterprise environments.
+        I’m passionate about building smooth, accessible, and high-impact web experiences. Most recently, I worked at Microsoft, as part of the Viva Engage (Yammer) team, where I designed and developed new features that enhanced social interaction and productivity in enterprise environments.
       </Paragraph>
 
       <Paragraph>

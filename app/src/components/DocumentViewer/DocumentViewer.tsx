@@ -5,6 +5,8 @@ import { ExperienceDocument, SkillsDocument, WelcomeDocument } from "@/sections/
 import { useOpenedProgramsStore, useOpenedProjectStore } from "@/store";
 import Image from "next/image";
 
+import FolderViewer from "../FolderViewer";
+
 import {
   DocumentViewerBody,
   DocumentViewerContainer,
@@ -12,7 +14,6 @@ import {
   DocumentViewerHeaderCloseButton,
   DocumentViewerHeaderTitle
 } from "./DocumentViewer.styles"
-import FolderViewer from "../FolderViewer";
 
 const getDocumentBody = (programId: number) => {
   switch (programId) {
