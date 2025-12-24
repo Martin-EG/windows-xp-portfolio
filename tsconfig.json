@@ -40,6 +40,9 @@
       ],
       "@/types": [
         "./app/src/types"
+      ],
+      "@/data": [
+        "./app/src/data"
       ]
     }
   },

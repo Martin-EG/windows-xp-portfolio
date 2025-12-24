@@ -1,7 +1,7 @@
 "use client"
+import { mostUsedPrograms } from "@/data";
 import { useOpenProgramCallback, useShortcutProgramImageProps } from "@/hooks";
 import { useStartMenuStore } from "@/store";
-import { Program } from "@/types";
 import { FC } from "react";
 import Image from "next/image";
 
@@ -27,25 +27,6 @@ type MostVisitedUrl = {
   name: string;
   url: string;
 }
-
-const mostUsedPrograms: Program[] = [
-  {
-    id: 1,
-    name: "Welcome",
-    programType: "document",
-  },
-  {
-    id: 2,
-    name: "My Experience",
-    programType: "document",
-    isActive: false
-  },
-  {
-    id: 4,
-    name: "Projects",
-    programType: "folder"
-  }
-]
 
 const mostVisitedUrls: MostVisitedUrl[] = [
   {
