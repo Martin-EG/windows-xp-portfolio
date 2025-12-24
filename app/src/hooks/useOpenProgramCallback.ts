@@ -10,15 +10,18 @@ export const useOpenProgramCallback: UseOpenProgramCallback = (program) => {
 
   return useCallback(() => {
     const currentProgram = programs[0];
-    if (currentProgram.id === program.id && currentProgram.isActive) {
+    if (currentProgram && currentProgram.id === program.id && currentProgram.isActive) {
       return;
     }
 
-    if (currentProgram.id === program.id) {
+    if (currentProgram && currentProgram.id === program.id) {
       return toggleProgram(program.id);
     }
 
-    removeProgram(currentProgram.id);
+    if (currentProgram) {
+      removeProgram(currentProgram.id);
+    }
+
     addProgram({ ...program, isActive: true });
   }, [programs, addProgram, removeProgram, toggleProgram])
 }

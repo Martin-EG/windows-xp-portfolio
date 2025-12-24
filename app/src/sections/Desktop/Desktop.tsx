@@ -1,3 +1,4 @@
+import DocumentViewer from "@/components/DocumentViewer";
 import StartMenu from "@/components/StartMenu";
 import Shortcut from "@/components/Shortcut";
 import { useStartMenuStore } from "@/store";
@@ -60,6 +61,8 @@ const Desktop: FC<DesktopProps> = ({ startMenuRef }) => {
             program={program}
           />
         ))}
+
+        <DocumentViewer />
 
         <StartMenu
           isOpen={isStartMenuOpen}

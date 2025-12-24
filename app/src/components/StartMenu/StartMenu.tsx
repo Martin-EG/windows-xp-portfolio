@@ -1,5 +1,6 @@
 "use client"
 import { useOpenProgramCallback, useShortcutProgramImageProps } from "@/hooks";
+import { useStartMenuStore } from "@/store";
 import { Program } from "@/types";
 import { FC } from "react";
 import Image from "next/image";
@@ -14,6 +15,7 @@ import {
   StartMenuOptions,
   StartMenuOptionsItem,
 } from "./StartMenu.styles";
+
 
 interface StartMenuProps {
   readonly isOpen: boolean;
@@ -61,6 +63,7 @@ const mostVisitedUrls: MostVisitedUrl[] = [
 ]
 
 const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuRef }) => {
+  const { toggleStartMenu } = useStartMenuStore((state) => state);
 
   if (!shouldShowStartMenu) return null;
 
@@ -68,8 +71,13 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
     const imageProps = useShortcutProgramImageProps(program.programType, program.name);
     const openProgram = useOpenProgramCallback(program);
 
+    const openProgramAndCloseStartMenu = () => {
+      openProgram();
+      toggleStartMenu();
+    }
+
     return (
-      <StartMenuMostUsedProgramsItem key={index} onClick={openProgram}>
+      <StartMenuMostUsedProgramsItem key={index} onClick={openProgramAndCloseStartMenu}>
         <Image
           {...imageProps}
           width={32}
