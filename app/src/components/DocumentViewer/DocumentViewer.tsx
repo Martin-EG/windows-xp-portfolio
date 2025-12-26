@@ -45,9 +45,11 @@ const DocumentViewer = () => {
 
   const body = programType === "folder"
     ? <FolderViewer />
-    : <DocumentViewerBody>
-      {getDocumentBody(id)}
-    </DocumentViewerBody>;
+    : (
+      <DocumentViewerBody>
+        {getDocumentBody(id)}
+      </DocumentViewerBody>
+    );
 
   return (
     <DocumentViewerContainer>

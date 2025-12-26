@@ -23,6 +23,9 @@ export const DocumentViewerContainer = styled.div`
   transform: translate(-50%, -50%);
   z-index: 500;
 
+  display: flex;
+  flex-direction: column;
+
   animation: ${DocumentViewerOpenAnimation} 0.3s ease-in-out;
 
   @media (max-width: 600px) {
@@ -66,7 +69,8 @@ export const DocumentViewerHeaderCloseButton = styled.button`
 `;
 
 export const DocumentViewerBody = styled.div`
-  height: calc(100% - 30px);
+  flex: 1;
+  min-height: 0;
   width: 100%;
   padding: 10px;
   overflow: auto;
