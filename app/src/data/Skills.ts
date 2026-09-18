@@ -1,19 +1,19 @@
 export const skills = [
   {
     title: 'Frontend',
-    description: 'React / NextJs, TypeScript, JavaScript (ES6+), HTML, CSS, Redux, Angular, A11y, Responsive Design'
+    description: 'React, NextJs, TypeScript, HTML, CSS, Material UI, Tailwind CSS, Redux, Angular, Accessibility (WCAG 2.1), Relay, Responsive Design, Zustand'
   },
   {
     title: 'Architecture & Tooling',
-    description: 'Component Libraries, Design Systems, Frontend Architecture, Web Performance, GraphQL, REST APIs, CI/ CD, Gi'
+    description: 'Component Libraries, Design Systems, Frontend Architecture, Web Performance, GraphQL, REST APIs, CI/ CD, Git'
   },
   {
     title: 'Testing',
-    description: 'Jest, React Testing Library'
+    description: 'Jest, React Testing Library, Playwright'
   },
   {
     title: 'Backend',
-    description: 'NodeJs, Express, NestJs, PHP'
+    description: 'GO, NodeJs, Express, NestJs, PHP'
   },
   {
     title: 'Databases',

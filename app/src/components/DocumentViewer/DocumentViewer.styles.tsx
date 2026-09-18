@@ -12,7 +12,7 @@ const DocumentViewerOpenAnimation = keyframes`
 `
 
 export const DocumentViewerContainer = styled.div`
-  max-width: 90%;
+  width: 80%;
   max-height: 90%;
   background-color: #fff;
   border-radius: 8px;

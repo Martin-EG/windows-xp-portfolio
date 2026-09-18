@@ -8,6 +8,7 @@ export const FolderViewerBody = styled.div`
   padding: 10px;
   overflow: auto;
   display: flex;
+  gap: 10px;
 
   @media (max-width: 600px) {
     flex-direction: column;
@@ -22,9 +23,9 @@ interface FolderViewerPanelProps {
 export const FolderViewerLeftPanel = styled.div<FolderViewerPanelProps>`
   width: ${props => props.$isSomeProjectOpened ? "250px" : "100%"};
   display: flex;
+  align-items: baseline;
   gap: 10px;
   padding: 10px;
-  border-right: ${props => props.$isSomeProjectOpened ? "1px solid #ccc" : "0"};
 
   @media (max-width: 600px) {
     width: 100%;

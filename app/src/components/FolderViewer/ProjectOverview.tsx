@@ -1,7 +1,6 @@
 "use client"
 
 import { useOpenedProjectStore } from "@/store";
-import { Project } from "@/types";
 import Image from "next/image";
 
 import {
@@ -13,7 +12,7 @@ const ProjectOverview = () => {
 
   if (!project) return null;
 
-  const imageWidth = project.id === 2 ? 200 : 1200;
+  const imageWidth = project.id === 4 ? 200 : 1500;
 
   return (
     <FolderViewerRightPanel $isSomeProjectOpened={!!project}>

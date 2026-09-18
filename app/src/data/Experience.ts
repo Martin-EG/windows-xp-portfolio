@@ -1,5 +1,25 @@
 export const experiences = [
   {
+    company: "Trimble",
+    position: "Software Engineer II",
+    date: "August 2026 - Now",
+    description: [
+      "Working on Modus components library. Building commands and skills for AI models.",
+      "Stack: Cursor, TypeScript, StencilJS, Jest, REST APIs, Accessibility (WCAG 2.1)"
+    ]
+  },
+  {
+    company: "GM transport",
+    position: "Sr. Software Engineer",
+    date: "June 2026 - August 2026",
+    description: [
+      "Refactored legacy ERP app to join related data in just one call, decreasing APIs calls from +200 to just one.",
+      "Analyzed accessibility of a AI chat mobile app improving colors and contrast making it visually better for users.",
+      "Implemented initial state of AI tokens acquisition feature E2E to use on the different AI tools like the AI chat ready to just insert Mercado Libre keys/tokens",
+      "Stack: TypeScript, GO, MySQL."
+    ]
+  },
+  {
     company: "Microsoft",
     position: "Software Engineer II",
     date: "January 2022 - October 2025",
