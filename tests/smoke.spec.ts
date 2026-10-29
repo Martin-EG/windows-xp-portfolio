@@ -116,7 +116,28 @@ test.describe("logged in", () => {
 
       const video = projectsWindow.locator("video");
       await expect(video).toHaveJSProperty("readyState", 4, { timeout: 10_000 });
+      await expect(projectsWindow.getByText("Loading preview…")).toHaveCount(0);
     }
+  });
+
+  test("switching projects keeps the Projects window the same size", async ({ page }) => {
+    await openFromStartMenu(page, "Projects");
+    const projectsWindow = windowTitled(page, "Projects");
+    await projectsWindow.getByRole("button", { name: "GlamVault", exact: true }).click();
+    await expect(projectsWindow.locator("video")).toHaveJSProperty("readyState", 4, { timeout: 10_000 });
+    const before = await projectsWindow.boundingBox();
+
+    // Hold the next preview back so the loading state is visible
+    await page.route("**/videos/cespm_redesign*", async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await route.continue();
+    });
+    await projectsWindow.getByRole("button", { name: "CESPM app", exact: true }).click();
+    await expect(projectsWindow.getByText("Loading preview…")).toBeVisible();
+    expect(await projectsWindow.boundingBox()).toEqual(before);
+
+    await expect(projectsWindow.getByText("Loading preview…")).toHaveCount(0, { timeout: 10_000 });
+    expect(await projectsWindow.boundingBox()).toEqual(before);
   });
 
   test("local links and assets resolve", async ({ page, request }) => {

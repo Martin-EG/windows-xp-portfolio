@@ -1,13 +1,16 @@
 "use client"
 
 import { useOpenedProjectStore } from "@/store";
-import { useEffect, useState } from "react";
+import { Project } from "@/types";
+import { FC, useEffect, useState } from "react";
 
 import {
   FolderViewerRightPanel,
   ProjectLink,
+  ProjectPreviewFrame,
+  ProjectPreviewLoading,
+  ProjectPreviewLoadingBar,
   ProjectPreviewVideo,
-  ProjectPreviewWrapper,
   ProjectTitle,
   VisuallyHidden,
 } from "./FolderViewer.styles"
@@ -26,35 +29,59 @@ const usePrefersReducedMotion = () => {
   return prefersReducedMotion;
 }
 
+// Keyed by project in the parent, so every project starts in the loading state
+const ProjectPreview: FC<{ readonly project: Project }> = ({ project }) => {
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const { preview } = project;
+  const markLoaded = () => setIsLoaded(true);
+
+  return (
+    <ProjectPreviewFrame aria-busy={!isLoaded}>
+      <ProjectPreviewVideo
+        width={preview.width}
+        height={preview.height}
+        poster={preview.poster}
+        autoPlay={!prefersReducedMotion}
+        muted
+        loop
+        playsInline
+        // Native controls (and the browser's own spinner) only once loaded, so they don't fight the overlay
+        controls={isLoaded}
+        preload="auto"
+        aria-label={`Video preview of ${project.name}`}
+        onLoadedData={markLoaded}
+        onError={markLoaded}
+      >
+        <source src={preview.webm} type="video/webm" />
+        {/* Source errors fire on the <source>, not the video; stop loading once the last one fails */}
+        <source src={preview.mp4} type="video/mp4" onError={markLoaded} />
+      </ProjectPreviewVideo>
+
+      {!isLoaded && (
+        <ProjectPreviewLoading role="status">
+          <ProjectPreviewLoadingBar aria-hidden="true">
+            <div>
+              <span />
+              <span />
+              <span />
+            </div>
+          </ProjectPreviewLoadingBar>
+          Loading preview…
+        </ProjectPreviewLoading>
+      )}
+    </ProjectPreviewFrame>
+  );
+}
+
 const ProjectOverview = () => {
   const { project } = useOpenedProjectStore((state) => state);
-  const prefersReducedMotion = usePrefersReducedMotion();
 
   if (!project) return null;
 
-  const { preview } = project;
-
   return (
     <FolderViewerRightPanel $isSomeProjectOpened={!!project}>
-      <ProjectPreviewWrapper>
-        {/* Keyed by project so switching projects loads the new sources */}
-        <ProjectPreviewVideo
-          key={project.id}
-          width={preview.width}
-          height={preview.height}
-          poster={preview.poster}
-          autoPlay={!prefersReducedMotion}
-          muted
-          loop
-          playsInline
-          controls
-          preload="metadata"
-          aria-label={`Video preview of ${project.name}`}
-        >
-          <source src={preview.webm} type="video/webm" />
-          <source src={preview.mp4} type="video/mp4" />
-        </ProjectPreviewVideo>
-      </ProjectPreviewWrapper>
+      <ProjectPreview key={project.id} project={project} />
       <div>
         <ProjectTitle>{project.name}</ProjectTitle>
         <p>{project.description}</p>
