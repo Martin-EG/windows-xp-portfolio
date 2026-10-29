@@ -18,6 +18,8 @@ const rememberLogin = (isLoggedIn: boolean) => {
 
 interface SessionState {
   phase: SessionPhase;
+  // After booting the login screen continues by itself; after Log Off it waits for a click
+  shouldAutoLogIn: boolean;
   finishBoot: () => void;
   logIn: () => void;
   logOff: () => void;
@@ -28,14 +30,15 @@ interface SessionState {
 export const useSessionStore = create<SessionState>((set) => ({
   // Matches the server render; returning visitors are moved to the desktop after hydration
   phase: "booting",
-  finishBoot: () => set({ phase: "login" }),
+  shouldAutoLogIn: true,
+  finishBoot: () => set({ phase: "login", shouldAutoLogIn: true }),
   logIn: () => {
     rememberLogin(true);
     set({ phase: "desktop" });
   },
   logOff: () => {
     rememberLogin(false);
-    set({ phase: "login" });
+    set({ phase: "login", shouldAutoLogIn: false });
   },
   turnOff: () => {
     rememberLogin(false);

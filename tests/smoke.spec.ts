@@ -1,7 +1,7 @@
 import { expect, Page, test } from "@playwright/test";
 
 const windowTitled = (page: Page, title: string) =>
-  page.getByRole("dialog", { name: title });
+  page.getByRole("dialog", { name: title, exact: true });
 
 // Mouse users double-click desktop icons; touch users tap them
 const openShortcut = async (page: Page, name: string, isMobile: boolean) => {
@@ -195,10 +195,9 @@ test.describe("session screens", () => {
   test("boots, logs in and skips the boot screen on reload", async ({ page }) => {
     await expect(page.getByRole("status", { name: "Starting up" })).toBeVisible();
 
-    const userButton = page.getByRole("button", { name: /Martin Espericueta/ });
-    await expect(userButton).toBeFocused({ timeout: 5_000 });
-    await userButton.click();
-    await expect(windowTitled(page, "Welcome")).toBeVisible();
+    // After booting, the login screen continues by itself
+    await expect(page.getByRole("dialog", { name: "welcome", exact: true })).toBeVisible({ timeout: 5_000 });
+    await expect(windowTitled(page, "Welcome")).toBeVisible({ timeout: 5_000 });
 
     await page.reload();
     await expect(page.getByRole("status", { name: "Starting up" })).toBeHidden();
@@ -208,11 +207,17 @@ test.describe("session screens", () => {
   test("log off and turn off from the Start menu", async ({ page }) => {
     await page.keyboard.press("Enter");
     await page.getByRole("button", { name: /Martin Espericueta/ }).click();
+    await expect(windowTitled(page, "Welcome")).toBeVisible();
 
     await page.getByRole("button", { name: "Start" }).click();
     await page.getByRole("button", { name: "Log Off" }).click();
     const loginScreen = page.getByRole("dialog", { name: "welcome", exact: true });
     await expect(loginScreen).toBeVisible();
+
+    // After logging off, the login screen waits for the visitor instead of logging back in
+    await page.waitForTimeout(2_500);
+    await expect(loginScreen).toBeVisible();
+    await expect(loginScreen.getByText("To begin, click your user name")).toBeVisible();
 
     await loginScreen.getByRole("button", { name: "Turn off computer" }).click();
     const restartButton = page.getByRole("button", { name: "Restart" });

@@ -36,6 +36,7 @@ import {
 
 const BOOT_DURATION_MS = 2500;
 const SHUTDOWN_DURATION_MS = 1500;
+const AUTO_LOG_IN_DELAY_MS = 1500;
 
 const isLoggedInThisSession = () => {
   try {
@@ -86,12 +87,21 @@ const BootScreen: FC = () => {
 }
 
 const LoginScreen: FC = () => {
-  const { logIn, turnOff } = useSessionStore((state) => state);
+  const { logIn, turnOff, shouldAutoLogIn } = useSessionStore((state) => state);
   const userButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     userButtonRef.current?.focus();
   }, []);
+
+  // Recruiters shouldn't have to click before seeing anything: continue on our own after boot.
+  // Clicking the user name still logs in straight away.
+  useEffect(() => {
+    if (!shouldAutoLogIn) return;
+
+    const timeoutId = setTimeout(logIn, AUTO_LOG_IN_DELAY_MS);
+    return () => clearTimeout(timeoutId);
+  }, [shouldAutoLogIn, logIn]);
 
   return (
     <LoginOverlay role="dialog" aria-modal="true" aria-labelledby="login-title">
@@ -100,7 +110,9 @@ const LoginScreen: FC = () => {
         <LoginIntro>
           <StartLogo size={64} />
           <LoginTitle id="login-title">welcome</LoginTitle>
-          <LoginInstructions>To begin, click your user name</LoginInstructions>
+          <LoginInstructions>
+            {shouldAutoLogIn ? "Logging on…" : "To begin, click your user name"}
+          </LoginInstructions>
         </LoginIntro>
         <LoginDivider />
         <LoginUsers>
@@ -108,7 +120,7 @@ const LoginScreen: FC = () => {
             <Image src="/images/profile-image.jpg" alt="" width={64} height={64} />
             <LoginUserName>
               Martin Espericueta
-              <small>Software Engineer</small>
+              <small>{shouldAutoLogIn ? "Loading your personal settings…" : "Software Engineer"}</small>
             </LoginUserName>
           </LoginUserButton>
         </LoginUsers>
