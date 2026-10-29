@@ -1,7 +1,6 @@
-"use client"
 import { ProgramType } from "@/types";
 
-export const useShortcutProgramImageProps = (programType?: ProgramType, name?: string) => {
+export const getShortcutProgramImageProps = (programType?: ProgramType, name?: string) => {
   switch (programType) {
     case "internet":
       return { src: "/images/InternetExplorer48.png", alt: `${name} internet shortcut` };

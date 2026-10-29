@@ -81,7 +81,7 @@ const ProgramButtonOpenAnimation = keyframes`
 export const ProgramButton = styled.button<{ $isActive?: boolean }>`
   height: 100%;
   width: 200px;
-  background-color: ${props => props.$isActive ? 'linear-gradient(148deg, #164DBC 0%, #1E53BB 100%)' : '#3980F4'};
+  background: ${props => props.$isActive ? 'linear-gradient(148deg, #164DBC 0%, #1E53BB 100%)' : '#3980F4'};
   border-radius: 8px;
   cursor: pointer;
   text-align: center;

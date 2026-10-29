@@ -26,5 +26,5 @@ export const useCloseStartMenuWhenClickingOutside: UseCloseStartMenuWhenClicking
     return () => {
       document.removeEventListener("mousedown", handleMouseDown);
     };
-  }, [isStartMenuOpen]);
+  }, [isStartMenuOpen, startMenuRef, toggleStartMenu]);
 }

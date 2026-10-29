@@ -2,7 +2,7 @@
 
 import { useOpenedProgramsStore } from "@/store";
 import { ProgramType } from "@/types";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from 'next/image';
 
 
@@ -17,7 +17,6 @@ import {
 
 interface TaskbarProps {
   readonly toggleStartMenu: () => void;
-  readonly startMenuRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const getProgramImageProps = (programType: ProgramType, name: string) => {
@@ -27,31 +26,37 @@ const getProgramImageProps = (programType: ProgramType, name: string) => {
     case "document":
       return { src: "/images/Document32.png", alt: `${name} document shortcut` };
     case "internet":
-      return { src: "/images/InternetExplorer24.png", alt: `${name} internet shortcut` };
+      return { src: "/images/InternetExplorer24.svg", alt: `${name} internet shortcut` };
   }
 }
 
-const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu, startMenuRef }) => {
-  const programs = useOpenedProgramsStore((state) => state.programs);
-  const [time, setTime] = useState(new Date().toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true
-  }));
+const getCurrentTime = () => new Date().toLocaleTimeString('en-US', {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true
+});
 
-  setInterval(() => {
-    setTime(new Date().toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true
-    }));
-  }, 1000);
+const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu }) => {
+  const { programs, toggleProgram } = useOpenedProgramsStore((state) => state);
+  // Empty on the server so the first client render matches, then filled in after mount
+  const [time, setTime] = useState("");
 
-  const programButtons = programs.map((program, index) => {
+  useEffect(() => {
+    const updateTime = () => setTime(getCurrentTime());
+    updateTime();
+    const intervalId = setInterval(updateTime, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const programButtons = programs.map((program) => {
     const { src, alt } = getProgramImageProps(program.programType, program.name);
 
     return (
-      <ProgramButton key={index} $isActive={program.isActive}>
+      <ProgramButton
+        key={program.id}
+        $isActive={program.isActive}
+        onClick={() => toggleProgram(program.id)}
+      >
         <Image src={src} alt={alt} width={24} height={24} />
         {program.name}
       </ProgramButton>
@@ -61,9 +66,7 @@ const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu, startMenuRef }) => {
   return (
     <TaskbarWrapper>
       <TaskbarContainer>
-        <div ref={startMenuRef}>
-          <StartButton data-id="start-button" onClick={toggleStartMenu}>Start</StartButton>
-        </div>
+        <StartButton data-id="start-button" onClick={toggleStartMenu}>Start</StartButton>
         <Flexbox>
           {programButtons}
         </Flexbox>

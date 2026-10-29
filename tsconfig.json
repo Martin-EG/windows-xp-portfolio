@@ -43,6 +43,9 @@
       ],
       "@/data": [
         "./app/src/data"
+      ],
+      "@/utils": [
+        "./app/src/utils"
       ]
     }
   },

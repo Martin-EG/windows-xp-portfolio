@@ -6,7 +6,7 @@ export const WelcomeDocument = () => {
   return (
     <div>
       <Title>
-        Hi! I'm Martin and I'm frontend developer
+        Hi! I’m Martin and I’m frontend developer
       </Title>
 
       <Paragraph>
