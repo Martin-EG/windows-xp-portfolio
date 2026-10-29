@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Martin Espericueta",
-  description: "Hi! I'm frontend developer and welcome to my portfolio!",
+  description: "Martin Espericueta, a frontend-focused Software Engineer. Explore my experience, skills, and projects in a Windows XP-style portfolio.",
 };
 
 export default function RootLayout({

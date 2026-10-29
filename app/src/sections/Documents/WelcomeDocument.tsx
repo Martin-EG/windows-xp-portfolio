@@ -6,11 +6,11 @@ export const WelcomeDocument = () => {
   return (
     <div>
       <Title>
-        Hi! I’m Martin and I’m frontend developer
+        Hi! I’m Martin, a frontend-focused Software Engineer
       </Title>
 
       <Paragraph>
-        I’m passionate about building smooth, accessible, and high-impact web experiences. Most recently, I worked at Microsoft, as part of the Viva Engage (Yammer) team, where I designed and developed new features that enhanced social interaction and productivity in enterprise environments.
+        I’m passionate about building smooth, accessible, and high-impact web experiences. I currently work at Trimble on the Modus components library. Before that, I spent almost four years at Microsoft on the Viva Engage (Yammer) team, where I designed and developed features used by millions of people, enhancing social interaction and productivity in enterprise environments.
       </Paragraph>
 
       <Paragraph>
@@ -19,6 +19,10 @@ export const WelcomeDocument = () => {
 
       <Paragraph>
         I’m constantly learning new technologies and keeping up with modern frontend trends. My goal is to continue growing as an engineer, creating products that deliver real value to users and make a meaningful digital impact.
+      </Paragraph>
+
+      <Paragraph>
+        Have a look around: open the documents on the desktop, browse my Projects folder, or open Contact to get in touch.
       </Paragraph>
     </div>
   )
