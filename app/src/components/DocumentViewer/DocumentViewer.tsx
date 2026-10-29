@@ -176,6 +176,7 @@ const DocumentViewer: FC<DocumentViewerProps> = ({ program }) => {
       $zIndex={zIndex}
       $cascadeIndex={cascadeIndex}
       $isMaximized={isMaximized}
+      $hasFixedHeight={programType === "folder"}
     >
       <DocumentViewerHeader
         $isActive={isActive}

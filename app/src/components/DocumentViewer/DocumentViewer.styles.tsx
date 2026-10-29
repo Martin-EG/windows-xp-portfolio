@@ -37,6 +37,7 @@ interface DocumentViewerContainerProps {
   readonly $zIndex: number;
   readonly $cascadeIndex: number;
   readonly $isMaximized: boolean;
+  readonly $hasFixedHeight: boolean;
 }
 
 // --drag-x / --drag-y are set inline while the window is dragged by its title bar
@@ -45,6 +46,8 @@ export const DocumentViewerContainer = styled.div<DocumentViewerContainerProps>`
 
   width: 80%;
   max-height: 90%;
+  /* Folder windows keep one size, so switching projects doesn't resize and re-centre them */
+  height: ${props => props.$hasFixedHeight ? "90%" : "auto"};
   background-color: #fff;
   border-radius: 8px 8px 4px 4px;
   border: 3px solid #0831D9;
