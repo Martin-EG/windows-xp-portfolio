@@ -3,9 +3,15 @@ import Taskbar from "@/components/Taskbar";
 import { useCloseStartMenuWhenClickingOutside } from "@/hooks";
 import Desktop from "@/sections/Desktop";
 import { useStartMenuStore } from "@/store";
+import styled from "styled-components";
 
 import { useRef } from "react";
 
+const Screen = styled.div`
+  width: 100%;
+  height: 100svh;
+  overflow-y: hidden;
+`;
 
 export default function Home() {
   const { toggleStartMenu } = useStartMenuStore((state) => state);
@@ -14,10 +20,10 @@ export default function Home() {
   useCloseStartMenuWhenClickingOutside({ startMenuRef, toggleStartMenu });
 
   return (
-    <div style={{ width: "100%", height: "100svh", overflowY: "hidden" }}>
+    <Screen>
       <Desktop startMenuRef={startMenuRef} />
 
       <Taskbar toggleStartMenu={toggleStartMenu} />
-    </div>
+    </Screen>
   );
 }

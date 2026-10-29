@@ -1,67 +1,49 @@
-import { Program } from "@/types"
+import { Program, ProgramId } from "@/types"
 
 import { links } from "./Links"
 
 export const programs: Program[] = [
   {
-    id: 1,
+    id: "welcome",
     name: "Welcome",
     programType: "document"
   },
   {
-    id: 2,
+    id: "experience",
     name: "My Experience",
     programType: "document"
   },
   {
-    id: 3,
+    id: "skills",
     name: "My Skills",
     programType: "document"
   },
   {
-    id: 4,
+    id: "projects",
     name: "Projects",
     programType: "folder"
   },
   {
-    id: 5,
+    id: "linkedin",
     name: "LinkedIn",
     programType: "internet",
     url: links.linkedIn
   },
   {
-    id: 6,
+    id: "github",
     name: "GitHub",
     programType: "internet",
     url: links.gitHub
   },
   {
-    id: 7,
+    id: "contact",
     name: "Contact",
     programType: "document"
   }
 ];
 
-export const mostUsedPrograms: Program[] = [
-  {
-    id: 1,
-    name: "Welcome",
-    programType: "document",
-  },
-  {
-    id: 2,
-    name: "My Experience",
-    programType: "document",
-    isActive: false
-  },
-  {
-    id: 4,
-    name: "Projects",
-    programType: "folder"
-  },
-  {
-    id: 7,
-    name: "Contact",
-    programType: "document"
-  }
-];
+const mostUsedProgramIds: ProgramId[] = ["welcome", "experience", "projects", "contact"];
+
+export const mostUsedPrograms = mostUsedProgramIds.map(
+  (id) => programs.find((program) => program.id === id)!
+);

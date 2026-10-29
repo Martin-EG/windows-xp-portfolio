@@ -1,7 +1,7 @@
 import DocumentViewer from "@/components/DocumentViewer";
 import StartMenu from "@/components/StartMenu";
 import Shortcut from "@/components/Shortcut";
-import { useStartMenuStore } from "@/store";
+import { useOpenedProgramsStore, useStartMenuStore } from "@/store";
 import { programs } from "@/data";
 
 import { FC } from "react";
@@ -15,7 +15,7 @@ interface DesktopProps {
 const Desktop: FC<DesktopProps> = ({ startMenuRef }) => {
   const isStartMenuOpen = useStartMenuStore((state) => state.isOpen);
   const shouldShowStartMenu = useStartMenuStore((state) => state.shouldShowStartMenu);
-
+  const openedPrograms = useOpenedProgramsStore((state) => state.programs);
 
   return (
     <StyledDesktop>
@@ -27,7 +27,9 @@ const Desktop: FC<DesktopProps> = ({ startMenuRef }) => {
           />
         ))}
 
-        <DocumentViewer />
+        {openedPrograms.map((program) => (
+          <DocumentViewer key={program.id} program={program} />
+        ))}
 
         <StartMenu
           isOpen={isStartMenuOpen}

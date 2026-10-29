@@ -62,3 +62,38 @@ export const ProjectWrapper = styled.button<ProjectWrapperProps>`
   font-size: 14px;
   background-color: ${props => props.$isProjectActive ? "#ccc" : "transparent"};
 `
+
+export const ProjectPreviewWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`
+
+export const ProjectPreviewVideo = styled.video`
+  max-width: 100%;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+`
+
+export const ProjectTitle = styled.h2`
+  font-weight: bold;
+`
+
+export const ProjectLink = styled.a`
+  color: blue;
+  text-decoration: underline;
+`
+
+export const VisuallyHidden = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+`

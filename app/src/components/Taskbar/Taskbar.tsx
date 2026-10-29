@@ -1,7 +1,7 @@
 "use client"
 
-import { useOpenedProgramsStore, useStartMenuStore } from "@/store";
-import { ProgramType } from "@/types";
+import { selectActiveProgramId, useOpenedProgramsStore, useStartMenuStore } from "@/store";
+import { ProgramId, ProgramType } from "@/types";
 import { FC, useEffect, useState } from "react";
 import Image from 'next/image';
 
@@ -11,6 +11,7 @@ import {
   ProgramButton,
   StartButton,
   SystemSection,
+  SystemSectionLanguage,
   TaskbarContainer,
   TaskbarWrapper,
 } from './Taskbar.styles';
@@ -37,7 +38,8 @@ const getCurrentTime = () => new Date().toLocaleTimeString('en-US', {
 });
 
 const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu }) => {
-  const { programs, toggleProgram } = useOpenedProgramsStore((state) => state);
+  const { programs, focusProgram, minimizeProgram } = useOpenedProgramsStore((state) => state);
+  const activeProgramId = useOpenedProgramsStore(selectActiveProgramId);
   const isStartMenuOpen = useStartMenuStore((state) => state.isOpen);
   // Empty on the server so the first client render matches, then filled in after mount
   const [time, setTime] = useState("");
@@ -49,14 +51,25 @@ const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu }) => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Like XP: clicking the active window's button minimizes it, any other button brings that window forward
+  const handleProgramButtonClick = (programId: ProgramId) => {
+    if (programId === activeProgramId) {
+      minimizeProgram(programId);
+    } else {
+      focusProgram(programId);
+    }
+  }
+
   const programButtons = programs.map((program) => {
+    const isActive = program.id === activeProgramId;
+
     return (
       <ProgramButton
         key={program.id}
         type="button"
-        $isActive={program.isActive}
-        aria-pressed={!!program.isActive}
-        onClick={() => toggleProgram(program.id)}
+        $isActive={isActive}
+        aria-pressed={isActive}
+        onClick={() => handleProgramButtonClick(program.id)}
       >
         <Image src={getProgramIcon(program.programType)} alt="" width={24} height={24} />
         {program.name}
@@ -65,7 +78,7 @@ const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu }) => {
   });
 
   return (
-    <TaskbarWrapper>
+    <TaskbarWrapper role="region" aria-label="Taskbar">
       <TaskbarContainer>
         <StartButton
           type="button"
@@ -81,7 +94,7 @@ const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu }) => {
         </Flexbox>
       </TaskbarContainer>
       <SystemSection>
-        <span aria-hidden="true" style={{ marginRight: 6 }}>EN</span>
+        <SystemSectionLanguage aria-hidden="true">EN</SystemSectionLanguage>
         <time>{time}</time>
       </SystemSection>
     </TaskbarWrapper>

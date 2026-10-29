@@ -11,17 +11,24 @@ const DocumentViewerOpenAnimation = keyframes`
   }
 `
 
-export const DocumentViewerContainer = styled.div`
+interface DocumentViewerContainerProps {
+  readonly $zIndex: number;
+  readonly $cascadeIndex: number;
+}
+
+export const DocumentViewerContainer = styled.div<DocumentViewerContainerProps>`
+  --cascade-offset: ${props => props.$cascadeIndex * 24}px;
+
   width: 80%;
   max-height: 90%;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: calc(50% + var(--cascade-offset));
+  left: calc(50% + var(--cascade-offset));
   transform: translate(-50%, -50%);
-  z-index: 500;
+  z-index: ${props => 500 + props.$zIndex};
 
   display: flex;
   flex-direction: column;
@@ -29,6 +36,8 @@ export const DocumentViewerContainer = styled.div`
   animation: ${DocumentViewerOpenAnimation} 0.3s ease-in-out;
 
   @media (max-width: 600px) {
+    --cascade-offset: ${props => props.$cascadeIndex * 8}px;
+
     width: 90%;
     height: 90%;
   }
@@ -53,6 +62,26 @@ export const DocumentViewerHeaderTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+`;
+
+export const DocumentViewerHeaderButtons = styled.div`
+  display: flex;
+  gap: 4px;
+`;
+
+export const DocumentViewerHeaderMinimizeButton = styled.button`
+  background: linear-gradient(to bottom, #3C81F3 0%, #2663DE 100%);
+  color: #fff;
+  border: 1px solid #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4px;
+  line-height: 1;
 `;
 
 export const DocumentViewerHeaderCloseButton = styled.button`

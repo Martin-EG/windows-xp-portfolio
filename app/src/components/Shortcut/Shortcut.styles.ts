@@ -14,3 +14,13 @@ export const ShortcutBody = styled.div`
   font-size: 14px;
 `
 
+
+export const ShortcutButton = styled.button`
+  width: 135px;
+  height: 75px;
+`
+
+export const ShortcutLink = styled.a`
+  width: 135px;
+  height: 75px;
+`

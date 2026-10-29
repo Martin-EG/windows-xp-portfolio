@@ -10,14 +10,6 @@ interface OpenedProjectState {
 
 export const useOpenedProjectStore = create<OpenedProjectState>((set) => ({
   project: null,
-  openProject: (project: Project) => set(
-    (state) => ({
-      project: project
-    })
-  ),
-  closeProject: () => set(
-    (state) => ({
-      project: null
-    })
-  ),
+  openProject: (project: Project) => set({ project }),
+  closeProject: () => set({ project: null }),
 }));

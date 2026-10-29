@@ -5,6 +5,11 @@ import { useEffect, useState } from "react";
 
 import {
   FolderViewerRightPanel,
+  ProjectLink,
+  ProjectPreviewVideo,
+  ProjectPreviewWrapper,
+  ProjectTitle,
+  VisuallyHidden,
 } from "./FolderViewer.styles"
 
 const usePrefersReducedMotion = () => {
@@ -31,9 +36,9 @@ const ProjectOverview = () => {
 
   return (
     <FolderViewerRightPanel $isSomeProjectOpened={!!project}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+      <ProjectPreviewWrapper>
         {/* Keyed by project so switching projects loads the new sources */}
-        <video
+        <ProjectPreviewVideo
           key={project.id}
           width={preview.width}
           height={preview.height}
@@ -45,19 +50,18 @@ const ProjectOverview = () => {
           controls
           preload="metadata"
           aria-label={`Video preview of ${project.name}`}
-          style={{ maxWidth: "100%", maxHeight: 500, width: "auto", height: "auto" }}
         >
           <source src={preview.webm} type="video/webm" />
           <source src={preview.mp4} type="video/mp4" />
-        </video>
-      </div>
+        </ProjectPreviewVideo>
+      </ProjectPreviewWrapper>
       <div>
-        <h2 style={{ fontWeight: "bold" }}>{project.name}</h2>
+        <ProjectTitle>{project.name}</ProjectTitle>
         <p>{project.description}</p>
         <p><b>Technologies:</b> {project.technologies?.join(", ")}</p>
-        <a href={project.url} target="_blank" rel="noopener noreferrer" style={{ color: "blue", textDecoration: "underline" }}>
-          {project.urlText}<span className="sr-only"> (opens in a new tab)</span>
-        </a>
+        <ProjectLink href={project.url} target="_blank" rel="noopener noreferrer">
+          {project.urlText}<VisuallyHidden> (opens in a new tab)</VisuallyHidden>
+        </ProjectLink>
       </div>
     </FolderViewerRightPanel>
   )
