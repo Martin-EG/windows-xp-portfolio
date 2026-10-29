@@ -6,8 +6,10 @@ My personal portfolio, built as a Windows XP desktop. Open documents to read abo
 
 ## Features
 
-- Desktop shortcuts, Start menu and taskbar with a live clock
-- Multiple windows with cascading, minimize/restore from the taskbar and bring-to-front on click
+- Boot, login and shutdown screens (shown once per browser tab session; press any key to skip the boot)
+- Desktop icons that select on click and open on double-click (single tap on touch screens, Enter on the keyboard)
+- Start menu with All Programs, Log Off and Turn Off Computer, and a taskbar with tray icons and a live clock
+- Multiple windows that cascade, drag by the title bar, maximize (button or title bar double-click), minimize to the taskbar and come to the front on click
 - Projects folder with video previews of each project
 - Keyboard and screen reader support: windows are labelled dialogs, Escape closes windows and the Start menu, and focus returns to where you were
 - Respects `prefers-reduced-motion`
@@ -51,7 +53,7 @@ app/
     components/         Window (DocumentViewer), FolderViewer, Shortcut, StartMenu, Taskbar
     sections/           Desktop and the document contents (Welcome, Experience, Skills, Contact)
     data/               Content: experience, skills, projects, programs and links
-    store/              Zustand stores for open windows, the Start menu and the selected project
+    store/              Zustand stores for open windows, the Start menu, the session screens and the selected project
     types/              Shared TypeScript types
 public/
   images/               Icons, wallpaper and profile photo

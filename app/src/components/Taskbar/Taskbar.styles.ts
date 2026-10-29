@@ -17,60 +17,81 @@ export const TaskbarContainer = styled.div`
   column-gap: 5px;
 `;
 
-export const StartButton = styled.button`
+export const StartButton = styled.button<{ $isPressed: boolean }>`
   height: 100%;
-  width: 180px;
-  background: linear-gradient(148deg, #278D27 0%, #15D715 100%);
+  width: 150px;
+  background: ${props => props.$isPressed
+    ? "radial-gradient(circle at 50% 120%, #1A7A1A 0%, #237F23 45%, #2E9A2E 100%)"
+    : "radial-gradient(circle at 50% 120%, #3DAA3D 0%, #39B439 45%, #5ECF5E 100%)"};
+  box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.35), inset 2px 2px 4px rgba(255, 255, 255, 0.35);
   cursor: pointer;
-  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  padding-right: 10px;
   color: white;
+  font-family: "Trebuchet MS", Tahoma, sans-serif;
+  font-style: italic;
   font-weight: bold;
-  -webkit-text-stroke: 1px black;
-  font-size: 28px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  font-size: 26px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
   flex-shrink: 0;
-  transition: all 0.2s ease-in-out;
+  transition: filter 0.2s ease-in-out;
 
   &:hover {
-    background: linear-gradient(148deg, #1B611B 0%, #13BF13 100%);
+    filter: brightness(1.1);
   }
 
   @media (max-width: 900px) {
     width: 130px;
-    font-size: 28px;
+    font-size: 24px;
   }
 
   @media (max-width: 600px) {
-    width: 100px;
-    font-size: 24px;
+    width: 96px;
+    font-size: 20px;
+    gap: 4px;
   }
 `
 
 export const SystemSection = styled.div`
   height: 100%;
-  width: 180px;
-  background-color: #0D9BEF;
+  min-width: 150px;
+  padding: 0 14px;
+  background: linear-gradient(to bottom, #0C59B9 0%, #139EE9 8%, #18B5F2 50%, #139BEB 92%, #1290E8 100%);
+  border-left: 1px solid #1042AF;
+  box-shadow: inset 1px 0 1px #18BBFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 16px;
   color: white;
   flex-shrink: 0;
   white-space: nowrap;
 
   @media (max-width: 900px) {
-    width: 130px;
-    font-size: 16px;
+    min-width: 130px;
+    font-size: 14px;
   }
 
   @media (max-width: 600px) {
-    width: auto;
+    min-width: 0;
     padding: 0 10px;
     font-size: 14px;
+  }
+`
+
+export const SystemTrayIcons = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+
+  @media (max-width: 600px) {
+    display: none;
   }
 `
 

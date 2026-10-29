@@ -22,7 +22,7 @@ export const WelcomeDocument = () => {
       </Paragraph>
 
       <Paragraph>
-        Have a look around: open the documents on the desktop, browse my Projects folder, or open Contact to get in touch.
+        Have a look around: double-click (or tap) the icons on the desktop, browse my Projects folder, or open Contact to get in touch. Everything is also in the Start menu.
       </Paragraph>
     </div>
   )

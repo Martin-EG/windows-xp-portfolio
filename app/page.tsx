@@ -1,8 +1,9 @@
 "use client"
+import SessionScreen from "@/components/SessionScreen";
 import Taskbar from "@/components/Taskbar";
 import { useCloseStartMenuWhenClickingOutside } from "@/hooks";
 import Desktop from "@/sections/Desktop";
-import { useStartMenuStore } from "@/store";
+import { useSessionStore, useStartMenuStore } from "@/store";
 import styled from "styled-components";
 
 import { useRef } from "react";
@@ -16,14 +17,20 @@ const Screen = styled.div`
 export default function Home() {
   const { toggleStartMenu } = useStartMenuStore((state) => state);
   const startMenuRef = useRef<HTMLDivElement>(null);
+  const isOnDesktop = useSessionStore((state) => state.phase === "desktop");
 
   useCloseStartMenuWhenClickingOutside({ startMenuRef, toggleStartMenu });
 
   return (
-    <Screen>
-      <Desktop startMenuRef={startMenuRef} />
+    <>
+      {/* The desktop stays in the page for crawlers but is inert behind the boot and login screens */}
+      <Screen inert={!isOnDesktop}>
+        <Desktop startMenuRef={startMenuRef} />
 
-      <Taskbar toggleStartMenu={toggleStartMenu} />
-    </Screen>
+        <Taskbar toggleStartMenu={toggleStartMenu} />
+      </Screen>
+
+      <SessionScreen />
+    </>
   );
 }

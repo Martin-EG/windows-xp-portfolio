@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next"
 import type { Metadata, Viewport } from "next";
 import { site } from "@/data";
+import { LOGGED_IN_STORAGE_KEY } from "@/utils";
 
 import "./globals.css";
 import StyledComponentsRegistry from "./src/providers/StyledComponentsRegistry";
@@ -32,6 +33,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Runs before paint so visitors who already logged in this tab don't see the boot screen flash
+const SKIP_BOOT_SCRIPT = `try{if(sessionStorage.getItem("${LOGGED_IN_STORAGE_KEY}")==="1")document.documentElement.dataset.skipBoot=""}catch(e){}`;
+
 export const viewport: Viewport = {
   themeColor: "#245DDA",
 };
@@ -42,7 +46,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // The inline script below may add data-skip-boot before React hydrates
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SKIP_BOOT_SCRIPT }} />
+      </head>
       <body>
         <StyledComponentsRegistry>
           <ThemeProvider>

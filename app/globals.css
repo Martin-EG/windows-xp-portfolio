@@ -9,8 +9,14 @@
 }
 
 body {
+  font-family: Tahoma, Verdana, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Set by the inline script in the layout for visitors who already logged in this tab */
+html[data-skip-boot] [data-session-screen="booting"] {
+  display: none;
 }
 
 p {
