@@ -1,5 +1,5 @@
 "use client"
-import { experiences } from "@/data"
+import { experiences, links } from "@/data"
 
 import { Title, Paragraph, SectionTitle, List } from "./Documents.styles"
 
@@ -7,7 +7,7 @@ export const ExperienceDocument = () => {
   return (
     <div>
       <Title>
-        My profesional experience
+        My professional experience
       </Title>
 
       {experiences.map((experience, index) => (
@@ -23,9 +23,9 @@ export const ExperienceDocument = () => {
       ))}
 
       <Paragraph style={{ fontWeight: 'bold' }}>
-        For more information, please visit my {" "}
+        For more information, please visit my{" "}
         <a
-          href="https://www.linkedin.com/in/martin-espericueta/"
+          href={links.linkedIn}
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: 'underline' }}
@@ -33,7 +33,7 @@ export const ExperienceDocument = () => {
           LinkedIn profile
         </a> or{" "}
         <a
-          href="/files/CV-MartinMateoEspericuetaGomez-SoftwareEngineer.pdf"
+          href={links.cv}
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: 'underline' }}

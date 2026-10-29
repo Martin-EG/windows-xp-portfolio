@@ -1,5 +1,5 @@
 "use client"
-import { mostUsedPrograms } from "@/data";
+import { links, mostUsedPrograms } from "@/data";
 import { useOpenProgramCallback } from "@/hooks";
 import { useStartMenuStore } from "@/store";
 import { getShortcutProgramImageProps } from "@/utils";
@@ -32,15 +32,19 @@ type MostVisitedUrl = {
 const mostVisitedUrls: MostVisitedUrl[] = [
   {
     name: "LinkedIn",
-    url: "https://www.linkedin.com/in/martin-espericueta/"
+    url: links.linkedIn
   },
   {
     name: "GitHub",
-    url: "https://github.com/Martin-EG"
+    url: links.gitHub
   },
   {
     name: "CV",
-    url: "/files/CV-MartinMateoEspericuetaGomez-SoftwareEngineer.pdf"
+    url: links.cv
+  },
+  {
+    name: "Email me",
+    url: links.email
   }
 ]
 
@@ -93,7 +97,7 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
             <StartMenuOptionsItem
               key={index}
               href={url.url}
-              target="_blank"
+              target={url.url.startsWith("mailto:") ? undefined : "_blank"}
               rel="noopener noreferrer"
             >
               {url.name}

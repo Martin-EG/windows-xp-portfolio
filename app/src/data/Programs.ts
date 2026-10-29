@@ -1,5 +1,7 @@
 import { Program } from "@/types"
 
+import { links } from "./Links"
+
 export const programs: Program[] = [
   {
     id: 1,
@@ -25,13 +27,18 @@ export const programs: Program[] = [
     id: 5,
     name: "LinkedIn",
     programType: "internet",
-    url: "https://www.linkedin.com/in/martin-espericueta/"
+    url: links.linkedIn
   },
   {
     id: 6,
     name: "GitHub",
     programType: "internet",
-    url: "https://github.com/Martin-EG"
+    url: links.gitHub
+  },
+  {
+    id: 7,
+    name: "Contact",
+    programType: "document"
   }
 ];
 
@@ -51,5 +58,10 @@ export const mostUsedPrograms: Program[] = [
     id: 4,
     name: "Projects",
     programType: "folder"
+  },
+  {
+    id: 7,
+    name: "Contact",
+    programType: "document"
   }
 ];

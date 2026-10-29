@@ -1,6 +1,6 @@
 "use client"
 
-import { ExperienceDocument, SkillsDocument, WelcomeDocument } from "@/sections/Documents";
+import { ContactDocument, ExperienceDocument, SkillsDocument, WelcomeDocument } from "@/sections/Documents";
 import { useOpenedProgramsStore, useOpenedProjectStore } from "@/store";
 import { getShortcutProgramImageProps } from "@/utils";
 import Image from "next/image";
@@ -23,6 +23,8 @@ const getDocumentBody = (programId: number) => {
       return <ExperienceDocument />
     case 3:
       return <SkillsDocument />
+    case 7:
+      return <ContactDocument />
     default:
       return null
   }
