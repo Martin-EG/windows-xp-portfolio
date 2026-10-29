@@ -4,6 +4,10 @@ import styled from "styled-components";
 
 export const StyledDesktop = styled.div`
     background-image: url("/images/windows-xp-background.jpg");
+    background-image: image-set(
+      url("/images/windows-xp-background.webp") type("image/webp"),
+      url("/images/windows-xp-background.jpg") type("image/jpeg")
+    );
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
