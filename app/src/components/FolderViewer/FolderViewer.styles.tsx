@@ -50,7 +50,7 @@ interface ProjectWrapperProps {
   $isProjectActive: boolean;
 }
 
-export const ProjectWrapper = styled.div<ProjectWrapperProps>`
+export const ProjectWrapper = styled.button<ProjectWrapperProps>`
   width: 100px;
   height: 75px;
   display: flex;

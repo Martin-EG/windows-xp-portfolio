@@ -3,3 +3,24 @@
 p {
   margin: 0;
 }
+
+/* XP-style dotted focus ring that follows the text color, so it shows on the desktop and inside windows */
+:focus-visible {
+  outline: 1px dotted currentColor;
+  outline-offset: 2px;
+}
+
+/* Windows receive focus programmatically when opened; the title bar already shows which one is open */
+[role="dialog"]:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

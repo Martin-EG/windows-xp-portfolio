@@ -1,1 +1,1 @@
-export * from "./getShortcutProgramImageProps";
+export * from "./getShortcutProgramIcon";
