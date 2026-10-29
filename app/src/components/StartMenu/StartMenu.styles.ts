@@ -81,5 +81,3 @@ export const StartMenuOptionsItem = styled.a`
   text-decoration: none;
   font-size: 14px;
 `;
-
-//E7E8E2

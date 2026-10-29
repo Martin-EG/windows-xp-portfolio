@@ -1,7 +1,6 @@
 "use client"
 import { links, mostUsedPrograms } from "@/data";
-import { useOpenProgramCallback } from "@/hooks";
-import { useStartMenuStore } from "@/store";
+import { useOpenedProgramsStore, useStartMenuStore } from "@/store";
 import { getShortcutProgramIcon } from "@/utils";
 import { FC, useEffect } from "react";
 import Image from "next/image";
@@ -50,7 +49,7 @@ const mostVisitedUrls: MostVisitedUrl[] = [
 
 const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuRef }) => {
   const { toggleStartMenu } = useStartMenuStore((state) => state);
-  const openProgram = useOpenProgramCallback();
+  const openProgram = useOpenedProgramsStore((state) => state.openProgram);
 
   // Move focus to the first item when the menu opens so keyboard users land inside it
   useEffect(() => {

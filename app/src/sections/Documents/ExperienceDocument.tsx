@@ -1,7 +1,7 @@
 "use client"
 import { experiences, links } from "@/data"
 
-import { Title, Paragraph, SectionTitle, List } from "./Documents.styles"
+import { Title, Paragraph, SectionTitle, List, Link, Closing } from "./Documents.styles"
 
 export const ExperienceDocument = () => {
   return (
@@ -10,37 +10,27 @@ export const ExperienceDocument = () => {
         My professional experience
       </Title>
 
-      {experiences.map((experience, index) => (
-        <Paragraph key={index}>
+      {experiences.map((experience) => (
+        <Paragraph key={`${experience.company}-${experience.date}`}>
           <SectionTitle>{experience.company}</SectionTitle>
           {experience.position}  • {experience.date}
           <List>
-            {experience.description.map((description, index) => (
-              <li key={index}>{description}</li>
+            {experience.description.map((description) => (
+              <li key={description}>{description}</li>
             ))}
           </List>
         </Paragraph>
       ))}
 
-      <Paragraph style={{ fontWeight: 'bold' }}>
+      <Closing>
         For more information, please visit my{" "}
-        <a
-          href={links.linkedIn}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: 'underline' }}
-        >
+        <Link href={links.linkedIn} target="_blank" rel="noopener noreferrer">
           LinkedIn profile
-        </a> or{" "}
-        <a
-          href={links.cv}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: 'underline' }}
-        >
+        </Link> or{" "}
+        <Link href={links.cv} target="_blank" rel="noopener noreferrer">
           CV
-        </a>
-      </Paragraph>
+        </Link>
+      </Closing>
     </div>
   )
 }

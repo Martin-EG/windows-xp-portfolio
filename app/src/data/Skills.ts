@@ -1,4 +1,6 @@
-export const skills = [
+import { Skill } from "@/types"
+
+export const skills: Skill[] = [
   {
     title: 'Frontend',
     description: 'React, Next.js, TypeScript, HTML, CSS, Material UI, Tailwind CSS, Redux, Angular, Accessibility (WCAG 2.1), Relay, Responsive Design, Zustand'

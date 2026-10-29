@@ -11,8 +11,8 @@ export const SkillsDocument = () => {
         My skills
       </Title>
 
-      {skills.map((skill, index) => (
-        <Paragraph key={index}>
+      {skills.map((skill) => (
+        <Paragraph key={skill.title}>
           <SectionTitle>{skill.title}</SectionTitle>
           {skill.description}
         </Paragraph>

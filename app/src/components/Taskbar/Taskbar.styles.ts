@@ -69,6 +69,10 @@ export const SystemSection = styled.div`
   }
 `
 
+export const SystemSectionLanguage = styled.span`
+  margin-right: 6px;
+`
+
 const ProgramButtonOpenAnimation = keyframes`
   from {
     opacity: 0;

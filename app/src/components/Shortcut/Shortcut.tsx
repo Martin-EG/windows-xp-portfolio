@@ -1,11 +1,10 @@
-
-import { useOpenProgramCallback } from "@/hooks";
+import { useOpenedProgramsStore } from "@/store";
 import { Program, ProgramType } from "@/types";
 import { getShortcutProgramIcon } from "@/utils";
 import { FC } from "react";
 import Image from "next/image";
 
-import { ShortcutBody } from "./Shortcut.styles";
+import { ShortcutBody, ShortcutButton, ShortcutLink } from "./Shortcut.styles";
 
 interface ShortcutProps {
   readonly program: Program;
@@ -26,7 +25,7 @@ const Shortcut: FC<ShortcutProps> = ({ program }) => {
   const ariaLabel = getShortcutAriaLabel(program.programType, program.name);
   const iconSrc = getShortcutProgramIcon(program.programType);
 
-  const openProgram = useOpenProgramCallback();
+  const openProgram = useOpenedProgramsStore((state) => state.openProgram);
 
   const shortcutBody = (
     <ShortcutBody>
@@ -37,31 +36,23 @@ const Shortcut: FC<ShortcutProps> = ({ program }) => {
 
   return program.programType === "internet"
     ? (
-      <a
+      <ShortcutLink
         href={program.url}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={ariaLabel}
-        style={{
-          width: 135,
-          height: 75,
-        }}
       >
         {shortcutBody}
-      </a>
+      </ShortcutLink>
     )
     : (
-      <button
+      <ShortcutButton
         type="button"
         onClick={() => openProgram(program)}
         aria-label={ariaLabel}
-        style={{
-          width: 135,
-          height: 75,
-        }}
       >
         {shortcutBody}
-      </button>
+      </ShortcutButton>
     )
 };
 

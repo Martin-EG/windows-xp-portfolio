@@ -24,3 +24,11 @@ export const Paragraph = styled.div`
   font-size: 16px;
   margin-bottom: 15px;
 `
+
+export const Link = styled.a`
+  text-decoration: underline;
+`
+
+export const Closing = styled(Paragraph)`
+  font-weight: bold;
+`

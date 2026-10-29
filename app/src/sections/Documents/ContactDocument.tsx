@@ -1,7 +1,7 @@
 "use client"
 import { links } from "@/data"
 
-import { Title, Paragraph, List } from "./Documents.styles"
+import { Title, Paragraph, List, Link } from "./Documents.styles"
 
 export const ContactDocument = () => {
   return (
@@ -18,27 +18,27 @@ export const ContactDocument = () => {
         <List>
           <li>
             Email:{" "}
-            <a href={links.email} style={{ textDecoration: 'underline' }}>
+            <Link href={links.email}>
               martin.m.espericueta@gmail.com
-            </a>
+            </Link>
           </li>
           <li>
             LinkedIn:{" "}
-            <a href={links.linkedIn} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+            <Link href={links.linkedIn} target="_blank" rel="noopener noreferrer">
               linkedin.com/in/martin-espericueta
-            </a>
+            </Link>
           </li>
           <li>
             GitHub:{" "}
-            <a href={links.gitHub} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+            <Link href={links.gitHub} target="_blank" rel="noopener noreferrer">
               github.com/Martin-EG
-            </a>
+            </Link>
           </li>
           <li>
             CV:{" "}
-            <a href={links.cv} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+            <Link href={links.cv} target="_blank" rel="noopener noreferrer">
               Download PDF
-            </a>
+            </Link>
           </li>
         </List>
       </Paragraph>

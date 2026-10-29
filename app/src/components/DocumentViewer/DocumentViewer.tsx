@@ -1,10 +1,11 @@
 "use client"
 
 import { ContactDocument, ExperienceDocument, SkillsDocument, WelcomeDocument } from "@/sections/Documents";
-import { useOpenedProgramsStore, useOpenedProjectStore } from "@/store";
+import { selectActiveProgramId, useOpenedProgramsStore, useOpenedProjectStore } from "@/store";
+import { OpenedProgram, ProgramId } from "@/types";
 import { getShortcutProgramIcon } from "@/utils";
 import Image from "next/image";
-import { KeyboardEvent, useEffect, useRef } from "react";
+import { FC, KeyboardEvent, useEffect, useRef } from "react";
 
 import FolderViewer from "../FolderViewer";
 
@@ -12,65 +13,63 @@ import {
   DocumentViewerBody,
   DocumentViewerContainer,
   DocumentViewerHeader,
+  DocumentViewerHeaderButtons,
   DocumentViewerHeaderCloseButton,
+  DocumentViewerHeaderMinimizeButton,
   DocumentViewerHeaderTitle
 } from "./DocumentViewer.styles"
 
-const DOCUMENT_VIEWER_TITLE_ID = "document-viewer-title";
-
-const getDocumentBody = (programId: number) => {
-  switch (programId) {
-    case 1:
-      return <WelcomeDocument />
-    case 2:
-      return <ExperienceDocument />
-    case 3:
-      return <SkillsDocument />
-    case 7:
-      return <ContactDocument />
-    default:
-      return null
-  }
-}
+const documentBodies: Partial<Record<ProgramId, FC>> = {
+  welcome: WelcomeDocument,
+  experience: ExperienceDocument,
+  skills: SkillsDocument,
+  contact: ContactDocument,
+};
 
 const isVisible = (element: HTMLElement) =>
   element.isConnected &&
   (element.checkVisibility?.({ visibilityProperty: true }) ?? true);
 
-const DocumentViewer = () => {
-  const { programs, removeProgram } = useOpenedProgramsStore((state) => state);
+interface DocumentViewerProps {
+  readonly program: OpenedProgram;
+}
+
+const DocumentViewer: FC<DocumentViewerProps> = ({ program }) => {
+  const { id, name, programType, isMinimized, cascadeIndex, skipInitialFocus } = program;
+  const { closeProgram, focusProgram, minimizeProgram } = useOpenedProgramsStore((state) => state);
+  const zIndex = useOpenedProgramsStore((state) => state.zOrder.indexOf(id));
+  const isActive = useOpenedProgramsStore((state) => selectActiveProgramId(state) === id);
   const { closeProject } = useOpenedProjectStore((state) => state);
   const containerRef = useRef<HTMLDivElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
-  const hasMountedRef = useRef(false);
+  const skipFocusRef = useRef(!!skipInitialFocus);
 
-  const currentProgram = programs[0];
-  const isOpen = !!currentProgram?.isActive;
-  const currentProgramId = currentProgram?.id;
-
-  // Move focus into the window when the user opens one, and remember where it came from.
-  // The Welcome window that is open on page load does not steal focus.
+  // Move focus into the window when it becomes the active one (opened, restored or
+  // brought to front from outside), and remember where focus came from
   useEffect(() => {
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true;
+    if (skipFocusRef.current) {
+      skipFocusRef.current = false;
       return;
     }
-    if (!isOpen) return;
+
+    const container = containerRef.current;
+    if (!isActive || !container || container.contains(document.activeElement)) return;
 
     returnFocusRef.current = document.activeElement as HTMLElement | null;
-    containerRef.current?.focus();
-  }, [isOpen, currentProgramId]);
+    container.focus();
+  }, [isActive]);
 
-  if (!currentProgram || !isOpen) return null;
-
-  const { id, name, programType } = currentProgram;
+  if (isMinimized) return null;
 
   const closeDocumentViewer = () => {
-    removeProgram(id);
-    closeProject();
+    closeProgram(id);
+    if (id === "projects") closeProject();
 
+    // When another window is still showing it becomes active and takes focus,
+    // otherwise send focus back to whatever opened this window
+    const hasOtherVisibleWindow = selectActiveProgramId(useOpenedProgramsStore.getState()) !== undefined;
     const returnFocusElement = returnFocusRef.current;
-    if (returnFocusElement && isVisible(returnFocusElement)) {
+    if (!hasOtherVisibleWindow && returnFocusElement && isVisible(returnFocusElement)) {
       returnFocusElement.focus();
     }
   }
@@ -82,34 +81,50 @@ const DocumentViewer = () => {
     }
   }
 
+  const DocumentBody = documentBodies[id];
   const body = programType === "folder"
     ? <FolderViewer />
     : (
       <DocumentViewerBody>
-        {getDocumentBody(id)}
+        {DocumentBody && <DocumentBody />}
       </DocumentViewerBody>
     );
+
+  const titleId = `window-title-${id}`;
 
   return (
     <DocumentViewerContainer
       ref={containerRef}
       role="dialog"
-      aria-labelledby={DOCUMENT_VIEWER_TITLE_ID}
+      aria-labelledby={titleId}
       tabIndex={-1}
       onKeyDown={handleKeyDown}
+      // Clicking or tabbing into a window brings it to the front
+      onFocus={() => !isActive && focusProgram(id)}
+      $zIndex={zIndex}
+      $cascadeIndex={cascadeIndex}
     >
       <DocumentViewerHeader>
-        <DocumentViewerHeaderTitle id={DOCUMENT_VIEWER_TITLE_ID}>
+        <DocumentViewerHeaderTitle id={titleId}>
           <Image src={getShortcutProgramIcon(programType)} alt="" width={20} height={20} />
           {name}
         </DocumentViewerHeaderTitle>
-        <DocumentViewerHeaderCloseButton
-          type="button"
-          aria-label={`Close ${name}`}
-          onClick={closeDocumentViewer}
-        >
-          <span aria-hidden="true">x</span>
-        </DocumentViewerHeaderCloseButton>
+        <DocumentViewerHeaderButtons>
+          <DocumentViewerHeaderMinimizeButton
+            type="button"
+            aria-label={`Minimize ${name}`}
+            onClick={() => minimizeProgram(id)}
+          >
+            <span aria-hidden="true">_</span>
+          </DocumentViewerHeaderMinimizeButton>
+          <DocumentViewerHeaderCloseButton
+            type="button"
+            aria-label={`Close ${name}`}
+            onClick={closeDocumentViewer}
+          >
+            <span aria-hidden="true">x</span>
+          </DocumentViewerHeaderCloseButton>
+        </DocumentViewerHeaderButtons>
       </DocumentViewerHeader>
       {body}
     </DocumentViewerContainer>
