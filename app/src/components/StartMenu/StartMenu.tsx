@@ -1,19 +1,24 @@
 "use client"
-import { links, mostUsedPrograms } from "@/data";
-import { useOpenedProgramsStore, useStartMenuStore } from "@/store";
+import { links, mostUsedPrograms, programs } from "@/data";
+import { useOpenedProgramsStore, useSessionStore, useStartMenuStore } from "@/store";
+import { Program } from "@/types";
 import { getShortcutProgramIcon } from "@/utils";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 
 import {
+  StartMenuAllProgramsButton,
   StartMenuBody,
   StartMenuContainer,
+  StartMenuFooter,
+  StartMenuFooterButton,
   StartMenuHeader,
   StartMenuHeaderImageWrapper,
   StartMenuMostUsedPrograms,
   StartMenuMostUsedProgramsItem,
   StartMenuOptions,
   StartMenuOptionsItem,
+  StartMenuProgramsList,
 } from "./StartMenu.styles";
 
 
@@ -48,8 +53,17 @@ const mostVisitedUrls: MostVisitedUrl[] = [
 ]
 
 const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuRef }) => {
-  const { toggleStartMenu } = useStartMenuStore((state) => state);
-  const openProgram = useOpenedProgramsStore((state) => state.openProgram);
+  const { toggleStartMenu, closeStartMenu } = useStartMenuStore((state) => state);
+  const { openProgram, resetPrograms } = useOpenedProgramsStore((state) => state);
+  const { logOff, turnOff } = useSessionStore((state) => state);
+  const [isShowingAllPrograms, setIsShowingAllPrograms] = useState(false);
+  const [wasOpen, setWasOpen] = useState(isOpen);
+
+  // Start from the regular list again every time the menu closes
+  if (isOpen !== wasOpen) {
+    setWasOpen(isOpen);
+    if (!isOpen) setIsShowingAllPrograms(false);
+  }
 
   // Move focus to the first item when the menu opens so keyboard users land inside it
   useEffect(() => {
@@ -63,7 +77,33 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
 
   if (!shouldShowStartMenu) return null;
 
-  const MostUsedProgramItems = mostUsedPrograms.map((program) => {
+  const renderProgramItem = (program: Program) => {
+    const icon = (
+      <Image
+        src={getShortcutProgramIcon(program.programType)}
+        alt=""
+        width={32}
+        height={32}
+        preload={false}
+      />
+    );
+
+    if (program.programType === "internet") {
+      return (
+        <StartMenuMostUsedProgramsItem
+          key={program.id}
+          as="a"
+          href={program.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={toggleStartMenu}
+        >
+          {icon}
+          {program.name}
+        </StartMenuMostUsedProgramsItem>
+      );
+    }
+
     const openProgramAndCloseStartMenu = () => {
       openProgram(program);
       toggleStartMenu();
@@ -71,17 +111,17 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
 
     return (
       <StartMenuMostUsedProgramsItem key={program.id} type="button" onClick={openProgramAndCloseStartMenu}>
-        <Image
-          src={getShortcutProgramIcon(program.programType)}
-          alt=""
-          width={32}
-          height={32}
-          preload={false}
-        />
+        {icon}
         {program.name}
       </StartMenuMostUsedProgramsItem>
-    )
-  })
+    );
+  }
+
+  const leaveDesktop = (action: () => void) => {
+    closeStartMenu();
+    resetPrograms();
+    action();
+  }
 
   return (
     <StartMenuContainer
@@ -104,7 +144,17 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
       </StartMenuHeader>
       <StartMenuBody>
         <StartMenuMostUsedPrograms>
-          {MostUsedProgramItems}
+          <StartMenuProgramsList>
+            {(isShowingAllPrograms ? programs : mostUsedPrograms).map(renderProgramItem)}
+          </StartMenuProgramsList>
+          <StartMenuAllProgramsButton
+            type="button"
+            aria-expanded={isShowingAllPrograms}
+            onClick={() => setIsShowingAllPrograms((isShowing) => !isShowing)}
+          >
+            {isShowingAllPrograms ? "Back" : "All Programs"}
+            <span aria-hidden="true">{isShowingAllPrograms ? "◀" : "▶"}</span>
+          </StartMenuAllProgramsButton>
         </StartMenuMostUsedPrograms>
         <StartMenuOptions>
           {mostVisitedUrls.map((url) => (
@@ -119,6 +169,14 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
           ))}
         </StartMenuOptions>
       </StartMenuBody>
+      <StartMenuFooter>
+        <StartMenuFooterButton type="button" onClick={() => leaveDesktop(logOff)}>
+          <span aria-hidden="true">🔑</span> Log Off
+        </StartMenuFooterButton>
+        <StartMenuFooterButton type="button" $isDanger onClick={() => leaveDesktop(turnOff)}>
+          <span aria-hidden="true">⏻</span> Turn Off Computer
+        </StartMenuFooterButton>
+      </StartMenuFooter>
     </StartMenuContainer>
   );
 }

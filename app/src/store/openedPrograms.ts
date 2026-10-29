@@ -13,6 +13,9 @@ interface OpenedProgramsState {
   closeProgram: (programId: ProgramId) => void;
   focusProgram: (programId: ProgramId) => void;
   minimizeProgram: (programId: ProgramId) => void;
+  toggleMaximizeProgram: (programId: ProgramId) => void;
+  // Back to the state of a fresh visit, used when logging off
+  resetPrograms: () => void;
 }
 
 const bringToFront = (zOrder: ProgramId[], programId: ProgramId) => [
@@ -26,18 +29,23 @@ export const selectActiveProgramId = ({ programs, zOrder }: OpenedProgramsState)
     programs.some((program) => program.id === id && !program.isMinimized)
   );
 
-export const useOpenedProgramsStore = create<OpenedProgramsState>((set) => ({
+const initialPrograms = (): Pick<OpenedProgramsState, "programs" | "zOrder"> => ({
   programs: [
     {
       id: "welcome",
       name: "Welcome",
       programType: "document",
       isMinimized: false,
+      isMaximized: false,
       cascadeIndex: 0,
       skipInitialFocus: true,
     }
   ],
   zOrder: ["welcome"],
+});
+
+export const useOpenedProgramsStore = create<OpenedProgramsState>((set) => ({
+  ...initialPrograms(),
   openProgram: (program) => set((state) => {
     const isAlreadyOpen = state.programs.some(({ id }) => id === program.id);
 
@@ -61,6 +69,7 @@ export const useOpenedProgramsStore = create<OpenedProgramsState>((set) => ({
         {
           ...program,
           isMinimized: false,
+          isMaximized: false,
           cascadeIndex: freeSlot ?? state.programs.length % CASCADE_SLOTS,
         },
       ],
@@ -84,4 +93,12 @@ export const useOpenedProgramsStore = create<OpenedProgramsState>((set) => ({
       : program
     ),
   })),
+  toggleMaximizeProgram: (programId) => set((state) => ({
+    programs: state.programs.map((program) => program.id === programId
+      ? { ...program, isMaximized: !program.isMaximized }
+      : program
+    ),
+    zOrder: bringToFront(state.zOrder, programId),
+  })),
+  resetPrograms: () => set(initialPrograms()),
 }));

@@ -11,7 +11,6 @@ export const StyledDesktop = styled.div`
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    font-family: Arial, Helvetica, sans-serif;
     width: 100%;
     height: calc(100svh - var(--taskbar-height));
 `

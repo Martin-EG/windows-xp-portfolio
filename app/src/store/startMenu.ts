@@ -5,10 +5,12 @@ interface StartMenuState {
   isOpen: boolean;
   shouldShowStartMenu: boolean;
   toggleStartMenu: () => void;
+  closeStartMenu: () => void;
 }
 
 export const useStartMenuStore = create<StartMenuState>((set) => ({
   isOpen: false,
   shouldShowStartMenu: false,
   toggleStartMenu: () => set((state) => ({ isOpen: !state.isOpen, shouldShowStartMenu: true })),
+  closeStartMenu: () => set({ isOpen: false }),
 }));
