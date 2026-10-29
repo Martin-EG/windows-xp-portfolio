@@ -95,7 +95,7 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
       <StartMenuHeader>
         <StartMenuHeaderImageWrapper>
           <Image
-            src="/images/profile-image.JPEG"
+            src="/images/profile-image.jpg"
             alt="Profile picture"
             width={60}
             height={60}
