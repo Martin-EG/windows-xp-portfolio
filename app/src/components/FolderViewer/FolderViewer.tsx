@@ -21,10 +21,12 @@ const FolderViewer = () => {
         {projects.map((project) => (
           <ProjectWrapper
             key={project.id}
+            type="button"
             onClick={() => openProject(project)}
+            aria-pressed={project.id === activeProject?.id}
             $isProjectActive={project.id === activeProject?.id}
           >
-            <Image src="/images/Document48.png" alt={`${project.name} project`} width={48} height={48} />
+            <Image src="/images/Document48.png" alt="" width={48} height={48} />
             {project.name}
           </ProjectWrapper>
         ))}

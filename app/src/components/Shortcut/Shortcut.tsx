@@ -1,7 +1,7 @@
 
 import { useOpenProgramCallback } from "@/hooks";
 import { Program, ProgramType } from "@/types";
-import { getShortcutProgramImageProps } from "@/utils";
+import { getShortcutProgramIcon } from "@/utils";
 import { FC } from "react";
 import Image from "next/image";
 
@@ -16,7 +16,7 @@ const getShortcutAriaLabel = (programType: ProgramType, name: string) => {
     case "folder":
       return `Open ${name} folder`;
     case "internet":
-      return `Go to ${name} page`;
+      return `Go to ${name} page (opens in a new tab)`;
     case "document":
       return `Open ${name} document`;
   }
@@ -24,15 +24,15 @@ const getShortcutAriaLabel = (programType: ProgramType, name: string) => {
 
 const Shortcut: FC<ShortcutProps> = ({ program }) => {
   const ariaLabel = getShortcutAriaLabel(program.programType, program.name);
-  const imageProps = getShortcutProgramImageProps(program.programType, program.name);
+  const iconSrc = getShortcutProgramIcon(program.programType);
 
   const openProgram = useOpenProgramCallback();
 
   const shortcutBody = (
-    <ShortcutBody aria-label={ariaLabel} >
-      <Image {...imageProps} width={48} height={48} />
+    <ShortcutBody>
+      <Image src={iconSrc} alt="" width={48} height={48} />
       {program.name}
-    </ShortcutBody >
+    </ShortcutBody>
   );
 
   return program.programType === "internet"
@@ -52,6 +52,7 @@ const Shortcut: FC<ShortcutProps> = ({ program }) => {
     )
     : (
       <button
+        type="button"
         onClick={() => openProgram(program)}
         aria-label={ariaLabel}
         style={{

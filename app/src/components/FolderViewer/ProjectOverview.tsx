@@ -17,13 +17,15 @@ const ProjectOverview = () => {
   return (
     <FolderViewerRightPanel $isSomeProjectOpened={!!project}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
-        <Image src={project.image} alt={project.name} width={imageWidth} height={500} />
+        <Image src={project.image} alt={`Animated preview of ${project.name}`} width={imageWidth} height={500} />
       </div>
       <div>
         <h2 style={{ fontWeight: "bold" }}>{project.name}</h2>
         <p>{project.description}</p>
         <p><b>Technologies:</b> {project.technologies?.join(", ")}</p>
-        <a href={project.url} target="_blank" rel="noopener noreferrer" style={{ color: "blue" }}>{project.urlText}</a>
+        <a href={project.url} target="_blank" rel="noopener noreferrer" style={{ color: "blue", textDecoration: "underline" }}>
+          {project.urlText}<span className="sr-only"> (opens in a new tab)</span>
+        </a>
 
       </div>
     </FolderViewerRightPanel>

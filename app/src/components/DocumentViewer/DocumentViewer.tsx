@@ -2,8 +2,9 @@
 
 import { ContactDocument, ExperienceDocument, SkillsDocument, WelcomeDocument } from "@/sections/Documents";
 import { useOpenedProgramsStore, useOpenedProjectStore } from "@/store";
-import { getShortcutProgramImageProps } from "@/utils";
+import { getShortcutProgramIcon } from "@/utils";
 import Image from "next/image";
+import { KeyboardEvent, useEffect, useRef } from "react";
 
 import FolderViewer from "../FolderViewer";
 
@@ -14,6 +15,8 @@ import {
   DocumentViewerHeaderCloseButton,
   DocumentViewerHeaderTitle
 } from "./DocumentViewer.styles"
+
+const DOCUMENT_VIEWER_TITLE_ID = "document-viewer-title";
 
 const getDocumentBody = (programId: number) => {
   switch (programId) {
@@ -30,19 +33,53 @@ const getDocumentBody = (programId: number) => {
   }
 }
 
+const isVisible = (element: HTMLElement) =>
+  element.isConnected &&
+  (element.checkVisibility?.({ visibilityProperty: true }) ?? true);
 
 const DocumentViewer = () => {
   const { programs, removeProgram } = useOpenedProgramsStore((state) => state);
   const { closeProject } = useOpenedProjectStore((state) => state);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const hasMountedRef = useRef(false);
 
-  if (programs.length === 0 || !programs[0].isActive) return null;
+  const currentProgram = programs[0];
+  const isOpen = !!currentProgram?.isActive;
+  const currentProgramId = currentProgram?.id;
 
-  const { id, name, programType } = programs[0];
-  const programImageProps = getShortcutProgramImageProps(programType, name);
+  // Move focus into the window when the user opens one, and remember where it came from.
+  // The Welcome window that is open on page load does not steal focus.
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+    if (!isOpen) return;
+
+    returnFocusRef.current = document.activeElement as HTMLElement | null;
+    containerRef.current?.focus();
+  }, [isOpen, currentProgramId]);
+
+  if (!currentProgram || !isOpen) return null;
+
+  const { id, name, programType } = currentProgram;
 
   const closeDocumentViewer = () => {
     removeProgram(id);
     closeProject();
+
+    const returnFocusElement = returnFocusRef.current;
+    if (returnFocusElement && isVisible(returnFocusElement)) {
+      returnFocusElement.focus();
+    }
+  }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      e.stopPropagation();
+      closeDocumentViewer();
+    }
   }
 
   const body = programType === "folder"
@@ -54,14 +91,24 @@ const DocumentViewer = () => {
     );
 
   return (
-    <DocumentViewerContainer>
+    <DocumentViewerContainer
+      ref={containerRef}
+      role="dialog"
+      aria-labelledby={DOCUMENT_VIEWER_TITLE_ID}
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+    >
       <DocumentViewerHeader>
-        <DocumentViewerHeaderTitle>
-          <Image {...programImageProps} width={20} height={20} />
+        <DocumentViewerHeaderTitle id={DOCUMENT_VIEWER_TITLE_ID}>
+          <Image src={getShortcutProgramIcon(programType)} alt="" width={20} height={20} />
           {name}
         </DocumentViewerHeaderTitle>
-        <DocumentViewerHeaderCloseButton onClick={closeDocumentViewer}>
-          x
+        <DocumentViewerHeaderCloseButton
+          type="button"
+          aria-label={`Close ${name}`}
+          onClick={closeDocumentViewer}
+        >
+          <span aria-hidden="true">x</span>
         </DocumentViewerHeaderCloseButton>
       </DocumentViewerHeader>
       {body}

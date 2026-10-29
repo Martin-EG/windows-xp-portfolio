@@ -44,7 +44,7 @@ export const experiences = [
   {
     company: "Martech Medical Products",
     position: "Software Development Engineer",
-    date: "May 2021 - November 2021",
+    date: "March 2020 - October 2021",
     description: [
       "Built internal tools automating manual workflows across departments.",
       "Delivered a Cost Request System reducing engineering-to-cost communication time by 40%.",

@@ -2,8 +2,8 @@
 import { links, mostUsedPrograms } from "@/data";
 import { useOpenProgramCallback } from "@/hooks";
 import { useStartMenuStore } from "@/store";
-import { getShortcutProgramImageProps } from "@/utils";
-import { FC } from "react";
+import { getShortcutProgramIcon } from "@/utils";
+import { FC, useEffect } from "react";
 import Image from "next/image";
 
 import {
@@ -52,20 +52,29 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
   const { toggleStartMenu } = useStartMenuStore((state) => state);
   const openProgram = useOpenProgramCallback();
 
+  // Move focus to the first item when the menu opens so keyboard users land inside it
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const frameId = requestAnimationFrame(() => {
+      startMenuRef.current?.querySelector<HTMLElement>("button, a")?.focus();
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, [isOpen, startMenuRef]);
+
   if (!shouldShowStartMenu) return null;
 
-  const MostUsedProgramItems = mostUsedPrograms.map((program, index) => {
-    const imageProps = getShortcutProgramImageProps(program.programType, program.name);
-
+  const MostUsedProgramItems = mostUsedPrograms.map((program) => {
     const openProgramAndCloseStartMenu = () => {
       openProgram(program);
       toggleStartMenu();
     }
 
     return (
-      <StartMenuMostUsedProgramsItem key={index} onClick={openProgramAndCloseStartMenu}>
+      <StartMenuMostUsedProgramsItem key={program.id} type="button" onClick={openProgramAndCloseStartMenu}>
         <Image
-          {...imageProps}
+          src={getShortcutProgramIcon(program.programType)}
+          alt=""
           width={32}
           height={32}
           preload={false}
@@ -76,7 +85,13 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
   })
 
   return (
-    <StartMenuContainer ref={startMenuRef} $isOpen={isOpen}>
+    <StartMenuContainer
+      id="start-menu"
+      ref={startMenuRef}
+      $isOpen={isOpen}
+      aria-label="Start menu"
+      role="region"
+    >
       <StartMenuHeader>
         <StartMenuHeaderImageWrapper>
           <Image
@@ -93,9 +108,9 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
           {MostUsedProgramItems}
         </StartMenuMostUsedPrograms>
         <StartMenuOptions>
-          {mostVisitedUrls.map((url, index) => (
+          {mostVisitedUrls.map((url) => (
             <StartMenuOptionsItem
-              key={index}
+              key={url.name}
               href={url.url}
               target={url.url.startsWith("mailto:") ? undefined : "_blank"}
               rel="noopener noreferrer"
