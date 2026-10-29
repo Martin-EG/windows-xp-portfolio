@@ -1,7 +1,8 @@
 "use client"
 import { mostUsedPrograms } from "@/data";
-import { useOpenProgramCallback, useShortcutProgramImageProps } from "@/hooks";
+import { useOpenProgramCallback } from "@/hooks";
 import { useStartMenuStore } from "@/store";
+import { getShortcutProgramImageProps } from "@/utils";
 import { FC } from "react";
 import Image from "next/image";
 
@@ -39,7 +40,7 @@ const mostVisitedUrls: MostVisitedUrl[] = [
   },
   {
     name: "CV",
-    url: "/files/CV-MartinMateoEspericuetaGomez-SoftwareEngineer-Nov2025.pdf"
+    url: "/files/CV-MartinMateoEspericuetaGomez-SoftwareEngineer.pdf"
   }
 ]
 
@@ -50,7 +51,7 @@ const StartMenu: FC<StartMenuProps> = ({ isOpen, shouldShowStartMenu, startMenuR
   if (!shouldShowStartMenu) return null;
 
   const MostUsedProgramItems = mostUsedPrograms.map((program, index) => {
-    const imageProps = useShortcutProgramImageProps(program.programType, program.name);
+    const imageProps = getShortcutProgramImageProps(program.programType, program.name);
 
     const openProgramAndCloseStartMenu = () => {
       openProgram(program);

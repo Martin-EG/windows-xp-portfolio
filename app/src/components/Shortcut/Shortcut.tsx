@@ -1,6 +1,7 @@
 
-import { useOpenProgramCallback, useShortcutProgramImageProps } from "@/hooks";
+import { useOpenProgramCallback } from "@/hooks";
 import { Program, ProgramType } from "@/types";
+import { getShortcutProgramImageProps } from "@/utils";
 import { FC } from "react";
 import Image from "next/image";
 
@@ -23,7 +24,7 @@ const getShortcutAriaLabel = (programType: ProgramType, name: string) => {
 
 const Shortcut: FC<ShortcutProps> = ({ program }) => {
   const ariaLabel = getShortcutAriaLabel(program.programType, program.name);
-  const imageProps = useShortcutProgramImageProps(program.programType, program.name);
+  const imageProps = getShortcutProgramImageProps(program.programType, program.name);
 
   const openProgram = useOpenProgramCallback();
 

@@ -1,8 +1,8 @@
 "use client"
 
-import { useShortcutProgramImageProps } from "@/hooks";
 import { ExperienceDocument, SkillsDocument, WelcomeDocument } from "@/sections/Documents";
 import { useOpenedProgramsStore, useOpenedProjectStore } from "@/store";
+import { getShortcutProgramImageProps } from "@/utils";
 import Image from "next/image";
 
 import FolderViewer from "../FolderViewer";
@@ -33,10 +33,10 @@ const DocumentViewer = () => {
   const { programs, removeProgram } = useOpenedProgramsStore((state) => state);
   const { closeProject } = useOpenedProjectStore((state) => state);
 
-  if (programs.length === 0) return null;
+  if (programs.length === 0 || !programs[0].isActive) return null;
 
   const { id, name, programType } = programs[0];
-  const programImageProps = useShortcutProgramImageProps(programType, name);
+  const programImageProps = getShortcutProgramImageProps(programType, name);
 
   const closeDocumentViewer = () => {
     removeProgram(id);

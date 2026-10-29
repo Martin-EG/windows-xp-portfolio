@@ -17,7 +17,7 @@ export default function Home() {
     <div style={{ width: "100%", height: "100svh", overflowY: "hidden" }}>
       <Desktop startMenuRef={startMenuRef} />
 
-      <Taskbar toggleStartMenu={toggleStartMenu} startMenuRef={startMenuRef} />
+      <Taskbar toggleStartMenu={toggleStartMenu} />
     </div>
   );
 }
