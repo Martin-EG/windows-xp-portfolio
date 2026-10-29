@@ -13,7 +13,7 @@ export const StyledDesktop = styled.div`
     background-repeat: no-repeat;
     font-family: Arial, Helvetica, sans-serif;
     width: 100%;
-    height: 95svh;
+    height: calc(100svh - var(--taskbar-height));
 `
 
 export const ProgramsContainer = styled.div`

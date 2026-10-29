@@ -9,6 +9,7 @@ import Image from 'next/image';
 import {
   Flexbox,
   ProgramButton,
+  ProgramButtonLabel,
   StartButton,
   SystemSection,
   SystemSectionLanguage,
@@ -72,7 +73,7 @@ const Taskbar: FC<TaskbarProps> = ({ toggleStartMenu }) => {
         onClick={() => handleProgramButtonClick(program.id)}
       >
         <Image src={getProgramIcon(program.programType)} alt="" width={24} height={24} />
-        {program.name}
+        <ProgramButtonLabel>{program.name}</ProgramButtonLabel>
       </ProgramButton>
     )
   });

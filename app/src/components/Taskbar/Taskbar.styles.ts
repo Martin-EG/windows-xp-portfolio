@@ -4,13 +4,14 @@ import styled, { keyframes } from "styled-components";
 
 export const TaskbarWrapper = styled.div`
   width: 100%;
-  height: 5svh;
+  height: var(--taskbar-height);
   display: flex;
   justify-content: space-between;
 `;
 
 export const TaskbarContainer = styled.div`
   width: 100%;
+  min-width: 0;
   background-color: #245DDB;
   display: flex;
   column-gap: 5px;
@@ -31,6 +32,7 @@ export const StartButton = styled.button`
   font-size: 28px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+  flex-shrink: 0;
   transition: all 0.2s ease-in-out;
 
   &:hover {
@@ -57,6 +59,8 @@ export const SystemSection = styled.div`
   justify-content: center;
   font-size: 20px;
   color: white;
+  flex-shrink: 0;
+  white-space: nowrap;
 
   @media (max-width: 900px) {
     width: 130px;
@@ -64,13 +68,18 @@ export const SystemSection = styled.div`
   }
 
   @media (max-width: 600px) {
-    width: 130px;
+    width: auto;
+    padding: 0 10px;
     font-size: 14px;
   }
 `
 
 export const SystemSectionLanguage = styled.span`
   margin-right: 6px;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 `
 
 const ProgramButtonOpenAnimation = keyframes`
@@ -85,6 +94,8 @@ const ProgramButtonOpenAnimation = keyframes`
 export const ProgramButton = styled.button<{ $isActive?: boolean }>`
   height: 100%;
   width: 200px;
+  min-width: 0;
+  flex-shrink: 1;
   background: ${props => props.$isActive ? 'linear-gradient(148deg, #164DBC 0%, #1E53BB 100%)' : '#3980F4'};
   border-radius: 8px;
   cursor: pointer;
@@ -99,8 +110,6 @@ export const ProgramButton = styled.button<{ $isActive?: boolean }>`
   transition: all 0.2s ease-in-out;
   border: rgba(35, 75, 157, .5) 0.5px solid;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
   animation: ${ProgramButtonOpenAnimation} 0.3s ease-in-out;
 
@@ -117,12 +126,28 @@ export const ProgramButton = styled.button<{ $isActive?: boolean }>`
     width: 130px;
     font-size: 14px;
   }
+
+  & > img {
+    flex-shrink: 0;
+  }
+`
+
+export const ProgramButtonLabel = styled.span`
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 export const Flexbox = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   column-gap: 5px;
   padding: 2px 10px;
+  min-width: 0;
+
+  @media (max-width: 600px) {
+    padding: 2px 6px;
+  }
 `

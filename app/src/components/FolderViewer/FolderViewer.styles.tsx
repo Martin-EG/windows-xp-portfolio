@@ -3,7 +3,8 @@
 import styled from "styled-components";
 
 export const FolderViewerBody = styled.div`
-  height: calc(100% - 30px);
+  flex: 1;
+  min-height: 0;
   width: 100%;
   padding: 10px;
   overflow: auto;

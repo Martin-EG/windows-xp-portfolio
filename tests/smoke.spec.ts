@@ -121,3 +121,15 @@ test("local links and assets resolve", async ({ page, request }) => {
     expect(response.status(), href).toBe(200);
   }
 });
+
+test("exposes share previews and crawler files", async ({ page, request }) => {
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", /Martin Espericueta/);
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
+
+  const ogImage = await page.locator('meta[property="og:image"]').getAttribute("content");
+  expect((await request.get(new URL(ogImage!).pathname)).status()).toBe(200);
+
+  for (const path of ["/robots.txt", "/sitemap.xml", "/manifest.json"]) {
+    expect((await request.get(path)).status(), path).toBe(200);
+  }
+});

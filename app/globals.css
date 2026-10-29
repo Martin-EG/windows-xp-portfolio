@@ -3,6 +3,11 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 
+:root {
+  /* Never thinner than a comfortable tap target on short screens */
+  --taskbar-height: max(5svh, 40px);
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

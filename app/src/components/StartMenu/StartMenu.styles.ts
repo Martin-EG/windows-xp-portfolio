@@ -9,8 +9,10 @@ interface StartMenuProps {
 export const StartMenuContainer = styled.div<StartMenuProps>`
   bottom: 0;
   left: 0;
-  width: 420px;
-  height: 500px;
+  width: min(420px, 100vw);
+  height: min(500px, calc(100svh - var(--taskbar-height)));
+  display: flex;
+  flex-direction: column;
   background-color: #fff;
   position: absolute;
   z-index: 1000;
@@ -25,6 +27,7 @@ export const StartMenuContainer = styled.div<StartMenuProps>`
 
 export const StartMenuHeader = styled.div`
   height: 70px;
+  flex-shrink: 0;
   background-color: #245DDB;
   background: linear-gradient(to bottom, #0D5FCB 0%, #4490EA 100%);
   padding: 5px 15px;
@@ -47,13 +50,16 @@ export const StartMenuHeaderImageWrapper = styled.div`
 `;
 
 export const StartMenuBody = styled.div`
-  height: 430px;
+  flex: 1;
+  min-height: 0;
   display: flex;
 `;
 
 export const StartMenuMostUsedPrograms = styled.div`
   height: 100%;
-  width: 270px;
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
   border-right: 1px solid #BBD6F8;
 `;
 
@@ -64,6 +70,7 @@ export const StartMenuMostUsedProgramsItem = styled.button`
   gap: 8px;
   padding: 5px 15px;
   cursor: pointer;
+  text-align: left;
 `;
 
 export const StartMenuOptions = styled.div`
