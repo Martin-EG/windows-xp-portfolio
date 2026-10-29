@@ -11,6 +11,17 @@ const DocumentViewerOpenAnimation = keyframes`
   }
 `
 
+const MaximizedDocumentViewerOpenAnimation = keyframes`
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+`
+
 interface DocumentViewerContainerProps {
   readonly $zIndex: number;
   readonly $cascadeIndex: number;
@@ -35,11 +46,15 @@ export const DocumentViewerContainer = styled.div<DocumentViewerContainerProps>`
 
   animation: ${DocumentViewerOpenAnimation} 0.3s ease-in-out;
 
+  /* On phones windows open maximized, filling the desktop above the taskbar */
   @media (max-width: 600px) {
-    --cascade-offset: ${props => props.$cascadeIndex * 8}px;
-
-    width: 90%;
-    height: 90%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+    transform: none;
+    animation-name: ${MaximizedDocumentViewerOpenAnimation};
   }
 `;
 
@@ -54,6 +69,11 @@ export const DocumentViewerHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(to bottom, #0D5FCB 0%, #4490EA 100%);
+
+  @media (max-width: 600px) {
+    height: 44px;
+    border-radius: 0;
+  }
 `;
 
 export const DocumentViewerHeaderTitle = styled.div`
@@ -67,6 +87,16 @@ export const DocumentViewerHeaderTitle = styled.div`
 export const DocumentViewerHeaderButtons = styled.div`
   display: flex;
   gap: 4px;
+
+  /* Bigger tap targets on touch screens */
+  @media (max-width: 600px) {
+    gap: 8px;
+
+    & > button {
+      width: 32px;
+      height: 32px;
+    }
+  }
 `;
 
 export const DocumentViewerHeaderMinimizeButton = styled.button`
